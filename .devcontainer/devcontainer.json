@@ -1,0 +1,16 @@
+{
+	"dockerComposeFile": ["../docker-compose.yml", "docker-compose.yml"],
+	"service": "web",
+	"workspaceFolder": "/workspace",
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"ms-python.vscode-pylance",
+				"KevinRose.vsc-python-indent",
+				"oderwat.indent-rainbow",
+				"christian-kohler.path-intellisense",
+				"tomoki1207.pdf"
+			]
+		}
+	}
+}
