@@ -13,7 +13,10 @@ ENV TERM=xterm
 RUN apt-get install -y vim less
 RUN pip install --upgrade pip setuptools
 
-# RUN apt-get install poppler-utils poppler-data
+RUN apt-get install -y poppler-utils poppler-data
+WORKDIR /workspace/
+COPY requirements.txt .
+RUN pip install -r ./requirements.txt
 
 
 
