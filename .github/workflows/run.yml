@@ -1,38 +1,38 @@
 name: Update Heatmap
 
 on:
-#   schedule:
-#     - cron: '0 8 * * *'
-  workflow_dispatch:
+    #   schedule:
+    #     - cron: '0 8 * * *'
+    workflow_dispatch:
 
 jobs:
-  update_heatmap:
-    name: Update Heatmap
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
+    update_heatmap:
+        name: Update Heatmap
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v2
 
-      - uses: actions/setup-python@v2
-        with:
-          python-version: '3.9'
-          cache: 'pip'
+            - uses: actions/setup-python@v2
+              with:
+                  python-version: "3.9"
+                  cache: "pip"
 
-      - name: Docker-compose Run
-        run: |
-          docker-compose up --build -d
-          docker-compose exec web bash
-        env:
-          PROJECT_ID: ${{ secrets.PROJECT_ID }}
-          PRIVATE_KEY_ID: ${{ secrets.PRIVATE_KEY_ID }}
-          PRIVATE_KEY: ${{ secrets.PRIVATE_KEY }}
-          CLIENT_EMAIL: ${{ secrets.CLIENT_EMAIL }}
-          CLIENT_ID: ${{ secrets.CLIENT_ID }}
-          CLIENT_X509_CERT_URL: ${{ secrets.CLIENT_X509_CERT_URL }}
-      
-      - name: Commit and Push Changes
-        run: |
-          git config --global user.name "${{ github.actor }}"
-          git config --global user.email "alive.vb.s2@gmail.com"
-          git add output.png
-          git commit -m "Update on `date` with GitHub Actions"
-          git push origin main
+            - name: Docker-compose Run
+              run: |
+                  docker-compose up --build -d
+                  # docker-compose exec web bash
+              env:
+                  PROJECT_ID: ${{ secrets.PROJECT_ID }}
+                  PRIVATE_KEY_ID: ${{ secrets.PRIVATE_KEY_ID }}
+                  PRIVATE_KEY: ${{ secrets.PRIVATE_KEY }}
+                  CLIENT_EMAIL: ${{ secrets.CLIENT_EMAIL }}
+                  CLIENT_ID: ${{ secrets.CLIENT_ID }}
+                  CLIENT_X509_CERT_URL: ${{ secrets.CLIENT_X509_CERT_URL }}
+
+            - name: Commit and Push Changes
+              run: |
+                  git config --global user.name "${{ github.actor }}"
+                  git config --global user.email "alive.vb.s2@gmail.com"
+                  git add output.png
+                  git commit -m "Update on `date` with GitHub Actions"
+                  git push origin main
