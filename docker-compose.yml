@@ -1,12 +1,18 @@
-version: '3'
+version: "3"
 services:
-  web:
-    restart: always
-    build: .
-    container_name: fmamily-finance
-    tty: true
-    stdin_open: true
-    working_dir: '/workspace/'
-    volumes:
-      - .bashrc:/root/.bashrc:ro
-      - .:/workspace
+    web:
+        restart: always
+        build: .
+        container_name: family-finance
+        command: python family-finance.py
+        tty: true
+        stdin_open: true
+        working_dir: "/workspace/"
+        volumes:
+            - .bashrc:/root/.bashrc:ro
+            - .:/workspace
+    # app:
+    #     command: python family-finance.py
+    #     depends_on:
+    #         web:
+    #             condition: service_healthy
