@@ -29,10 +29,10 @@ jobs:
                   CLIENT_ID: ${{ secrets.CLIENT_ID }}
                   CLIENT_X509_CERT_URL: ${{ secrets.CLIENT_X509_CERT_URL }}
 
-            - name: Commit and Push Changes
-              run: |
-                  git config --global user.name "${{ github.actor }}"
-                  git config --global user.email "alive.vb.s2@gmail.com"
-                  git add output.png
-                  git commit -m "Update on `date` with GitHub Actions"
-                  git push origin main
+            # - name: Commit and Push Changes
+            #   run: |
+            #       git config --global user.name "${{ github.actor }}"
+            #       git config --global user.email "alive.vb.s2@gmail.com"
+            #       git add output.png
+            #       git commit -m "Update on `date` with GitHub Actions"
+            #       git push origin main
