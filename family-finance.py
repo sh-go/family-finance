@@ -58,7 +58,7 @@ spreadsheet_url_options = (
 
 @client.event
 async def on_message(message):
-    if message.author != client.user:
+    if message.author == client.user:
         if "家計簿" in message.content:
             
             # pdfを取得
@@ -73,7 +73,14 @@ async def on_message(message):
             image = convert_from_path(pdf_name)
             image[0].save("output.png", "png")
 
-            await message.channel.send("先月の家計簿です！", file=discord.File("output.png"))
+            await message.channel.send("お疲れさまでしたー！", file=discord.File("output.png"))
             
-            
+
+@client.event
+async def on_ready():
+    guild = discord.utils.get(client.guilds)
+    channel = discord.utils.get(guild.text_channels, name="一般")
+    await channel.send("先月の家計簿でーす！")
+
+
 client.run(settings.DISCODE_BOT_TOKEN_FAMILYFINANCE)
