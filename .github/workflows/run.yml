@@ -1,4 +1,4 @@
-name: Update Heatmap
+name: Send Image
 
 on:
     #   schedule:
