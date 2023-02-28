@@ -81,6 +81,8 @@ async def on_ready():
     guild = discord.utils.get(client.guilds)
     channel = discord.utils.get(guild.text_channels, name="一般")
     await channel.send("先月の家計簿でーす！")
+    
+print("------ 実行されてます！ ------")
 
 
 client.run(settings.DISCODE_BOT_TOKEN_FAMILYFINANCE)
