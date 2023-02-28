@@ -1,5 +1,5 @@
 import discord, gspread
-import requests
+import requests, os
 import settings
 from pdf2image import convert_from_path
 from oauth2client.service_account import ServiceAccountCredentials
@@ -9,7 +9,7 @@ intents = discord.Intents.default()
 intents.message_content = True
 client = discord.Client(intents=intents)
 
-
+print("----- maked credentials.json ------" if os.path.isfile("./credentials.json") else "ないよ！")
 scope = ["https://www.googleapis.com/auth/spreadsheets", "https://www.googleapis.com/auth/drive"]
 credentials = ServiceAccountCredentials.from_json_keyfile_name("./credentials.json", scope)
 gc = gspread.authorize(credentials)
