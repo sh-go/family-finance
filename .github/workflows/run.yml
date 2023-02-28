@@ -18,20 +18,20 @@ jobs:
             #       cache: "pip"
 
             - name: Docker-compose Run
-                run: |
+              run: |
                     docker-compose up --build -d
                     # docker-compose exec web bash
-                env:
-                    PROJECT_ID: ${{ secrets.PROJECT_ID }}
-                    PRIVATE_KEY_ID: ${{ secrets.PRIVATE_KEY_ID }}
-                    PRIVATE_KEY: ${{ secrets.PRIVATE_KEY }}
-                    CLIENT_EMAIL: ${{ secrets.CLIENT_EMAIL }}
-                    CLIENT_ID: ${{ secrets.CLIENT_ID }}
-                    CLIENT_X509_CERT_URL: ${{ secrets.CLIENT_X509_CERT_URL }}
+              env:
+                PROJECT_ID: ${{ secrets.PROJECT_ID }}
+                PRIVATE_KEY_ID: ${{ secrets.PRIVATE_KEY_ID }}
+                PRIVATE_KEY: ${{ secrets.PRIVATE_KEY }}
+                CLIENT_EMAIL: ${{ secrets.CLIENT_EMAIL }}
+                CLIENT_ID: ${{ secrets.CLIENT_ID }}
+                CLIENT_X509_CERT_URL: ${{ secrets.CLIENT_X509_CERT_URL }}
                 
             - name: Sleep
-                run: sleep 1m
-                shell: bash
+              run: sleep 1m
+              shell: bash
 
 
             # - name: Commit and Push Changes
