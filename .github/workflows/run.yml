@@ -19,6 +19,7 @@ jobs:
 
             - name: Docker-compose Run
               run: |
+
                   docker-compose up --build -d
                   docker-compose exec -T web python family-finance.py
               env:
@@ -28,6 +29,7 @@ jobs:
                   CLIENT_EMAIL: ${{ secrets.CLIENT_EMAIL }}
                   CLIENT_ID: ${{ secrets.CLIENT_ID }}
                   CLIENT_X509_CERT_URL: ${{ secrets.CLIENT_X509_CERT_URL }}
+
 
             - name: Sleep
               run: sleep 1m
