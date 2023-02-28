@@ -4,7 +4,7 @@ services:
         restart: always
         build: .
         container_name: family-finance
-        command: python family-finance.py
+        # command: python family-finance.py
         tty: true
         stdin_open: true
         working_dir: "/workspace/"

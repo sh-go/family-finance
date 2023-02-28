@@ -20,7 +20,7 @@ jobs:
             - name: Docker-compose Run
               run: |
                   docker-compose up --build -d
-                  # docker-compose exec web bash
+                  docker-compose exec -T web python family-finance.py
               env:
                   PROJECT_ID: ${{ secrets.PROJECT_ID }}
                   PRIVATE_KEY_ID: ${{ secrets.PRIVATE_KEY_ID }}
