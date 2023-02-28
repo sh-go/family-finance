@@ -32,8 +32,9 @@ jobs:
     print_finished:
         needs: activate_program
         runs-on: ubuntu-latest
-        run: |
-            echo "------- Complete -------"
+        steps:
+            - run: |
+                  echo "------- Complete -------"
 
             # - name: Commit and Push Changes
             #   run: |
