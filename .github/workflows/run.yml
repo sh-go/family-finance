@@ -29,6 +29,11 @@ jobs:
                   CLIENT_ID: ${{ secrets.CLIENT_ID }}
                   CLIENT_X509_CERT_URL: ${{ secrets.CLIENT_X509_CERT_URL }}
 
+    print_finished:
+        needs: activate_program
+        run: |
+            echo "------- Complete -------"
+
             # - name: Commit and Push Changes
             #   run: |
             #       git config --global user.name "${{ github.actor }}"
