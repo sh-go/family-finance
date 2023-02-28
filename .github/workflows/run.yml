@@ -31,6 +31,7 @@ jobs:
 
     print_finished:
         needs: activate_program
+        runs-on: ubuntu-latest
         run: |
             echo "------- Complete -------"
 
