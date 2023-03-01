@@ -10,6 +10,9 @@ intents.message_content = True
 client = discord.Client(intents=intents)
 
 scope = ["https://www.googleapis.com/auth/spreadsheets", "https://www.googleapis.com/auth/drive"]
+with open('./credentials.json') as f:
+    lines = f.readlines()
+print(line for line in lines if "PROJECT_ID" in line)
 credentials = ServiceAccountCredentials.from_json_keyfile_name("./credentials.json", scope)
 gc = gspread.authorize(credentials)
 
