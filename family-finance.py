@@ -25,10 +25,10 @@ spreadsheet_url_options = (
     "&size=a5" +
     "&fitw=true" +
     "&horizontal_alignment=CENTER" +
-    "&top_margin=0.00"
-    "&bottom_margin=0.00"
-    "&left_margin=0.00"
-    "&right_margin=0.00"
+    "&top_margin=0.00" +
+    "&bottom_margin=0.00" +
+    "&left_margin=0.00" +
+    "&right_margin=0.00" +
     "&scale=4"
 )
 
