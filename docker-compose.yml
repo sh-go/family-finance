@@ -12,7 +12,7 @@ services:
             - .bashrc:/root/.bashrc:ro
             - .:/workspace
         environment:
-            PYTHONDONTWRITEBYTECODE: 1
+            # PYTHONDONTWRITEBYTECODE: 1
             PROJECT_ID: ${PROJECT_ID}
             PRIVATE_KEY_ID: ${PRIVATE_KEY_ID}
             PRIVATE_KEY: ${PRIVATE_KEY}

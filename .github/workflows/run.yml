@@ -29,9 +29,9 @@ jobs:
                   CLIENT_ID: ${{ secrets.CLIENT_ID }}
                   CLIENT_X509_CERT_URL: ${{ secrets.CLIENT_X509_CERT_URL }}
 
-            - name: Sleep
-              run: sleep 1m
-              shell: bash
+            # - name: Sleep
+            #   run: sleep 1m
+            #   shell: bash
 
             # - name: Commit and Push Changes
             #   run: |
