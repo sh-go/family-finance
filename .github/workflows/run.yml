@@ -17,7 +17,7 @@ jobs:
             #       python-version: "3.9"
             #       cache: "pip"
 
-            - uses: actions/github-scripts@v6
+            - uses: actions/github-script@v6
               with:
                   scripts: |
                       const name = "PRIVATE_KEY"
