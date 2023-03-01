@@ -17,6 +17,9 @@ jobs:
             #       python-version: "3.9"
             #       cache: "pip"
 
+            - name: Generate .env
+              run: sh set-up-env.sh
+
             - name: Docker-compose Run
               run: |
                   docker-compose up --build -d
