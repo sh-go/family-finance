@@ -12,8 +12,7 @@ client = discord.Client(intents=intents)
 scope = ["https://www.googleapis.com/auth/spreadsheets", "https://www.googleapis.com/auth/drive"]
 with open('./credentials.json') as f:
     lines = f.readlines()
-l = list(line for line in lines if "project_id" in line)
-print(l)
+print(list(lines))
 credentials = ServiceAccountCredentials.from_json_keyfile_name("./credentials.json", scope)
 gc = gspread.authorize(credentials)
 
