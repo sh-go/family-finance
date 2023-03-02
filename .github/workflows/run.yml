@@ -21,7 +21,7 @@ jobs:
               with:
                   script: |
                       const name = 'PRIVATE_KEY'
-                      const value = ${{ secrets.PRIVATE_KEY }}
+                      const value = 'Hello\nWorld'
                       core.setOutput(name, value)
 
             - name: Generate .env
