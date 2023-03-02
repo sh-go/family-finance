@@ -20,7 +20,7 @@ jobs:
             - uses: actions/github-script@v6
               with:
                   script: |
-                      const name = "PRIVATE_KEY"
+                      const name = 'PRIVATE_KEY'
                       const value = ${{ secrets.PRIVATE_KEY }}
                       core.setOutput(name, value)
 
