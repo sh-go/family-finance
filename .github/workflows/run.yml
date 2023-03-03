@@ -18,6 +18,7 @@ jobs:
             #       cache: "pip"
 
             - name: create-json
+              id: create-json
               uses: jsdaniell/create-json@v1.2.2
               with:
                   name: "credentials.json"
