@@ -25,7 +25,6 @@ jobs:
                   json: ${{ CREDENTIALS_JSON }}
 
             - name: Generate .env
-              #   run: chmod +x set-up-env.test.sh && sh set-up-env.test.sh
               env:
                   DISCODE_BOT_TOKEN_FAMILYFINANCE: ${{ secrets.DISCODE_BOT_TOKEN_FAMILYFINANCE }}
                   #   PROJECT_ID: ${{ secrets.PROJECT_ID }}
@@ -34,6 +33,7 @@ jobs:
                   #   CLIENT_EMAIL: ${{ secrets.CLIENT_EMAIL }}
                   #   CLIENT_ID: ${{ secrets.CLIENT_ID }}
                   #   CLIENT_X509_CERT_URL: ${{ secrets.CLIENT_X509_CERT_URL }}
+              #   run: chmod +x set-up-env.test.sh && sh set-up-env.test.sh
 
             - name: Docker-compose Run
               run: |
