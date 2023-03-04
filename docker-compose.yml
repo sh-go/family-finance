@@ -4,7 +4,6 @@ services:
         restart: always
         build: .
         container_name: family-finance
-        # command: python family-finance.py
         tty: true
         stdin_open: true
         working_dir: "/workspace/"
@@ -13,15 +12,4 @@ services:
             - .:/workspace
         env_file:
             - .env
-            # PYTHONDONTWRITEBYTECODE: 1
-            # PROJECT_ID: ${PROJECT_ID}
-            # PRIVATE_KEY_ID: ${PRIVATE_KEY_ID}
-            # PRIVATE_KEY: ${PRIVATE_KEY}
-            # CLIENT_EMAIL: ${CLIENT_EMAIL}
-            # CLIENT_ID: ${CLIENT_ID}
-            # CLIENT_X509_CERT_URL: ${CLIENT_X509_CERT_URL}
-    # app:
-    #     command: python family-finance.py
-    #     depends_on:
-    #         web:
-    #             condition: service_healthy
+

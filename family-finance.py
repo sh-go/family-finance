@@ -10,9 +10,6 @@ intents.message_content = True
 client = discord.Client(intents=intents)
 
 scope = ["https://www.googleapis.com/auth/spreadsheets", "https://www.googleapis.com/auth/drive"]
-with open('./credentials.json') as f:
-    lines = f.readlines()
-print(list(lines))
 credentials = ServiceAccountCredentials.from_json_keyfile_name("./credentials.json", scope)
 gc = gspread.authorize(credentials)
 
@@ -36,7 +33,7 @@ spreadsheet_url_options = (
 )
 
 
-'''
+'''spreadsheetのformat設定一覧
     &format=pdf                   //export format
     &size=a4                      //A3/A4/A5/B4/B5/letter/tabloid/legal/statement/executive/folio
     &portrait=false               //true= Potrait / false= Landscape
@@ -76,6 +73,8 @@ async def on_message(message):
             image[0].save("output.png", "png")
 
             await message.channel.send("お疲れさまでしたー！", file=discord.File("output.png"))
+            await client.close()
+            
             
 
 @client.event
@@ -84,7 +83,5 @@ async def on_ready():
     channel = discord.utils.get(guild.text_channels, name="一般")
     await channel.send("先月の家計簿でーす！")
     
-print("------ 実行されてます！ ------")
-
 
 client.run(settings.DISCODE_BOT_TOKEN_FAMILYFINANCE)

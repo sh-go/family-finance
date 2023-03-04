@@ -9,7 +9,8 @@
 				"KevinRose.vsc-python-indent",
 				"oderwat.indent-rainbow",
 				"christian-kohler.path-intellisense",
-				"tomoki1207.pdf"
+				"tomoki1207.pdf",
+				"ms-python.python"
 			]
 		}
 	}

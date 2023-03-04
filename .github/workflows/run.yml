@@ -1,8 +1,6 @@
 name: Send Image
 
 on:
-    #   schedule:
-    #     - cron: '0 8 * * *'
     workflow_dispatch:
 
 jobs:
@@ -12,11 +10,6 @@ jobs:
         steps:
             - uses: actions/checkout@v2
 
-            # - uses: actions/setup-python@v2
-            #   with:
-            #       python-version: "3.9"
-            #       cache: "pip"
-
             - name: create-json
               id: create-json
               uses: jsdaniell/create-json@v1.2.2
@@ -25,25 +18,14 @@ jobs:
                   json: ${{ secrets.CREDENTIALS_JSON }}
 
             - name: Generate .env
-              run: chmod +x set-up-env.test.sh && sh set-up-env.test.sh
+              run: chmod +x set-up-env.sh && sh set-up-env.sh
               env:
                   DISCODE_BOT_TOKEN_FAMILYFINANCE: ${{ secrets.DISCODE_BOT_TOKEN_FAMILYFINANCE }}
-            #   PROJECT_ID: ${{ secrets.PROJECT_ID }}
-            #   PRIVATE_KEY_ID: ${{ secrets.PRIVATE_KEY_ID }}
-            #   PRIVATE_KEY: ${{ secrets.PRIVATE_KEY }}
-            #   CLIENT_EMAIL: ${{ secrets.CLIENT_EMAIL }}
-            #   CLIENT_ID: ${{ secrets.CLIENT_ID }}
-            #   CLIENT_X509_CERT_URL: ${{ secrets.CLIENT_X509_CERT_URL }}
 
             - name: Docker-compose Run
               run: |
                   docker-compose up --build -d
                   docker-compose exec -T web python family-finance.py
-            #   env:
-            #       DISCODE_BOT_TOKEN_FAMILYFINANCE: ${{ secrets.DISCODE_BOT_TOKEN_FAMILYFINANCE }}
-            # - name: Sleep
-            #   run: sleep 1m
-            #   shell: bash
 
             # - name: Commit and Push Changes
             #   run: |
