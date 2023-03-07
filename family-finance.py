@@ -13,13 +13,16 @@ scope = ["https://www.googleapis.com/auth/spreadsheets", "https://www.googleapis
 credentials = ServiceAccountCredentials.from_json_keyfile_name("./credentials.json", scope)
 gc = gspread.authorize(credentials)
 
+# 欲しい家計簿の年月を指定
+year = 2023
+month = 2
 
-spreadsheet_name = "家計簿_2023"
+spreadsheet_name = f"家計簿_{year}"
 spreadsheet = gc.open(spreadsheet_name)
 spreadsheet_url = "https://docs.google.com/spreadsheets/d/" + spreadsheet.id
 spreadsheet_url_options = (
     "/export?format=pdf" +
-    "&gid=2090432382" +
+    f"&gid={spreadsheet.worksheet(f'{month}月').id}" +
     "&range=B1:J37" +
     "&portrait=true" +
     "&size=a5" +
@@ -56,7 +59,14 @@ spreadsheet_url_options = (
 
 
 @client.event
-async def on_message(message):
+async def on_ready(): # botが準備できた段階で画像送信のon_messageを発火させるコメントを送信
+    guild = discord.utils.get(client.guilds)
+    channel = discord.utils.get(guild.text_channels, name="一般")
+    await channel.send("先月の家計簿でーす！")
+
+
+@client.event
+async def on_message(message): # 画像送信
     if message.author == client.user:
         if "家計簿" in message.content:
             
@@ -72,16 +82,8 @@ async def on_message(message):
             image = convert_from_path(pdf_name)
             image[0].save("output.png", "png")
 
-            await message.channel.send("お疲れさまでしたー！", file=discord.File("output.png"))
+            await message.channel.send("お疲れさまでした！", file=discord.File("output.png"))
             await client.close()
             
             
-
-@client.event
-async def on_ready():
-    guild = discord.utils.get(client.guilds)
-    channel = discord.utils.get(guild.text_channels, name="一般")
-    await channel.send("先月の家計簿でーす！")
-    
-
 client.run(settings.DISCODE_BOT_TOKEN_FAMILYFINANCE)
