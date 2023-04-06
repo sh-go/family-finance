@@ -7,6 +7,10 @@ load_dotenv(dotenv_path)
 
 DISCODE_BOT_TOKEN_FAMILYFINANCE = os.environ.get("DISCODE_BOT_TOKEN_FAMILYFINANCE")
 
+MFEMAIL = os.environ.get("MFEMAIL")
+MFPASSWORD = os.environ.get("MFPASSWORD")
+TWO_STEP_AUTHENTICATION_CODE = os.environ.get("TWO_STEP_AUTHENTICATION_CODE")
+
 # CREDENTIALS = {
 #     "type": "service_account",
 #     "project_id": os.environ.get("PROJECT_ID"),

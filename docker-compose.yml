@@ -2,14 +2,19 @@ version: "3"
 services:
     web:
         restart: always
-        build: .
+        build:
+            context: .
+            args:
+                - UID=1000
+                - GID=1000
+                - USERNAME=user
+                - GROUPNAME=user
         container_name: family-finance
         tty: true
         stdin_open: true
         working_dir: "/workspace/"
         volumes:
-            - .bashrc:/root/.bashrc:ro
+            - .bashrc:/home/user/.bashrc:ro
             - .:/workspace
         env_file:
             - .env
-
