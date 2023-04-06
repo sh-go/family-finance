@@ -21,6 +21,9 @@ jobs:
               run: chmod +x set-up-env.sh && sh set-up-env.sh
               env:
                   DISCODE_BOT_TOKEN_FAMILYFINANCE: ${{ secrets.DISCODE_BOT_TOKEN_FAMILYFINANCE }}
+                  MFEMAIL: ${{ secrets.MFEMAIL }}
+                  MFPASSWORD: ${{ secrets.MFPASSWORD }}
+                  TWO_STEP_AUTHENTICATION_CODE: ${{ secrets.TWO_STEP_AUTHENTICATION_CODE }}
 
             - name: Docker-compose Run
               run: |

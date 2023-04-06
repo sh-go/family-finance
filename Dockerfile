@@ -1,9 +1,8 @@
-FROM linuxbrew:latest
 FROM python:3
-USER root
 
-RUN apt-get update
-RUN apt-get -y install locales && \
+
+RUN apt-get update && \
+    apt-get -y install locales && \
     localedef -f UTF-8 -i ja_JP ja_JP.UTF-8
 ENV LANG=ja_JP.UTF-8
 ENV LANGUAGE=ja_JP:ja
@@ -11,13 +10,27 @@ ENV LC_ALL=ja_JP.UTF-8
 ENV TZ=JST-9
 ENV TERM=xterm
 
-RUN apt-get install -y vim less
-RUN pip install --upgrade pip setuptools
+RUN apt-get install -y vim \
+    less \
+    poppler-utils \
+    poppler-data \
+    oathtool
 
-RUN apt-get install -y poppler-utils poppler-data
 WORKDIR /workspace/
 COPY requirements.txt .
-RUN pip install -r ./requirements.txt
+COPY set-up-chdriver.sh .
+RUN pip install --upgrade pip setuptools && \
+    pip install -r ./requirements.txt && \
+    chmod +x ./set-up-chdriver.sh && \
+    sh ./set-up-chdriver.sh
+
+ARG UID
+ARG GID
+ARG USERNAME
+ARG GROUPNAME
+# RUN groupadd -g ${GID} ${GROUPNAME} && \
+RUN useradd -m -s /bin/bash -u ${UID} -g ${GID} ${USERNAME}
+USER ${USERNAME}
 
 # chromedriver用
 # RUN apt-get install -y libglib2.0-0=2.50.3-2 \

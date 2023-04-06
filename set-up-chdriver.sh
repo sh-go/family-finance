@@ -1,4 +1,3 @@
-%%shell
 # Ubuntu no longer distributes chromium-browser outside of snap
 #
 # Proposed solution: https://askubuntu.com/questions/1204571/how-to-install-chromium-without-snap
@@ -39,7 +38,7 @@ EOF
 
 # Install chromium and chromium-driver
 apt-get update
-apt-get install chromium chromium-driver
+apt-get install -y chromium chromium-driver
 
 # Install selenium
 pip install selenium
