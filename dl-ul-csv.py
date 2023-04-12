@@ -5,13 +5,19 @@ from selenium.webdriver.chrome.service import Service as ChromeService
 from selenium.webdriver.chrome.options import Options as ChromeOptions
 from webdriver_manager.chrome import ChromeDriverManager
 from time import sleep, strftime
-import subprocess, re, os, requests, settings
+from oauth2client.service_account import ServiceAccountCredentials
+import subprocess, re, os, settings, glob, csv, gspread
+
+
+
+#### 家計簿csvのダウンロード ####
+# 家計簿の年月を指定
+year = 2023
+month = 3
 
 EMAIL = settings.MFEMAIL
 PASSWORD = settings.MFPASSWORD
 TWO_STEP_AUTHENTICATION_CODE = settings.TWO_STEP_AUTHENTICATION_CODE
-year = 2023
-month = 3
 options = ChromeOptions()
 # prefs = {
 #     "profile.default_content_settings.popups": 0,
@@ -100,3 +106,31 @@ print(">>>> OK!!")
 
 print(">>>> every program completed")
 browser.close()
+
+
+
+#### スプレッドシートにcsvをアップロード ####
+scope = ["https://www.googleapis.com/auth/spreadsheets", "https://www.googleapis.com/auth/drive"]
+credentials = ServiceAccountCredentials.from_json_keyfile_name("./credentials.json", scope)
+gc = gspread.authorize(credentials)
+
+
+glob_csv = glob.glob("*.csv")
+if glob_csv == []:
+    print(">>>> No Such csv File!! Please Download csv File.")
+    exit()
+    
+csv_file_name = glob_csv[0]
+spreadsheet_name = f"家計簿_{year}"
+spreadsheet = gc.open(spreadsheet_name)
+worksheet = spreadsheet.worksheet(f"{month}月")
+
+
+spreadsheet.values_clear(f"{month}月!Q1:Z200")
+csv_list = list(csv.reader(open(csv_file_name, encoding="shift_jis")))
+# csv.readerで読み込んだものは全て文字列となるため、金額部分のみint型に変更
+for row in csv_list[1:]:
+    row[3] = int(row[3])
+    
+worksheet.update("Q1:Z200", csv_list)
+os.remove(f"{csv_file_name}")
