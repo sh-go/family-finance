@@ -1,5 +1,5 @@
 import discord, gspread
-import os, requests, csv, glob
+import requests
 import settings
 from pdf2image import convert_from_path
 from oauth2client.service_account import ServiceAccountCredentials
@@ -9,7 +9,7 @@ from oauth2client.service_account import ServiceAccountCredentials
 
 # 欲しい家計簿の年月を指定
 year = 2023
-month = 3
+month = 2
 
 
 scope = ["https://www.googleapis.com/auth/spreadsheets", "https://www.googleapis.com/auth/drive"]
@@ -68,7 +68,7 @@ client = discord.Client(intents=intents)
 async def on_ready(): 
     guild = discord.utils.get(client.guilds)
     channel = discord.utils.get(guild.text_channels, name="一般")
-    await channel.send("先月の家計簿でーす！")
+    await channel.send(f"{year}年{month}月の家計簿でーす！")
 
 
 # 画像送信
@@ -89,7 +89,7 @@ async def on_message(message):
             image = convert_from_path(pdf_name)
             image[0].save("output.png", "png")
 
-            await message.channel.send("お疲れさまでした！", file=discord.File("output.png"))
+            await message.channel.send(file=discord.File("output.png"))
             await client.close()
             
             
