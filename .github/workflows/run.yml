@@ -54,10 +54,12 @@ jobs:
               run: |
                   docker-compose build --build-arg UID="$(id -u)" --build-arg GID="$(id -g)" && docker-compose up -d
                   docker-compose exec -T web python dl-ul-csv.py
+                  ${{ inputs.year }} ${{ inputs.month }}
 
             - name: Send image on discode
               run: |
                   docker-compose exec -T web python family-finance.py
+                  ${{ inputs.year }} ${{ inputs.month }}
 
             # - name: Commit and Push Changes
             #   run: |

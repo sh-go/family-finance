@@ -8,8 +8,7 @@ from oauth2client.service_account import ServiceAccountCredentials
 
 
 # 欲しい家計簿の年月を指定
-year = 2023
-month = 2
+year, month = map(int,input().split())
 
 
 scope = ["https://www.googleapis.com/auth/spreadsheets", "https://www.googleapis.com/auth/drive"]
