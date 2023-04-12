@@ -31,6 +31,7 @@ jobs:
                   docker-compose exec -T web python dl-ul-csv.py
 
             - name: Send image on discode
+              run: |
                   docker-compose exec -T web python family-finance.py
 
             # - name: Commit and Push Changes
