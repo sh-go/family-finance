@@ -12,8 +12,7 @@ import subprocess, re, os, settings, glob, csv, gspread
 
 #### 家計簿csvのダウンロード ####
 # 家計簿の年月を指定
-year, month = map(int,input().split())
-
+year, month = map(int, input().split())
 EMAIL = settings.MFEMAIL
 PASSWORD = settings.MFPASSWORD
 TWO_STEP_AUTHENTICATION_CODE = settings.TWO_STEP_AUTHENTICATION_CODE

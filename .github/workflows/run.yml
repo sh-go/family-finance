@@ -53,11 +53,11 @@ jobs:
             - name: Docker-compose Run & download-upload csv
               run: |
                   docker-compose build --build-arg UID="$(id -u)" --build-arg GID="$(id -g)" && docker-compose up -d
-                  docker-compose exec -T web echo ${{ inputs.year }} ${{ inputs.month }} | python dl-ul-csv.py
+                  docker-compose exec -T web bash -c "echo ${{ inputs.year }} ${{ inputs.month }} | python dl-ul-csv.py"
 
             - name: Send image on discode
               run: |
-                  docker-compose exec -T web echo ${{ inputs.year }} ${{ inputs.month }} | python family-finance.py
+                  docker-compose exec -T web bash -c "echo ${{ inputs.year }} ${{ inputs.month }} | python family-finance.py"
 
             # - name: Commit and Push Changes
             #   run: |
