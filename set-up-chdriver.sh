@@ -39,6 +39,3 @@ EOF
 # Install chromium and chromium-driver
 apt-get update
 apt-get install -y chromium chromium-driver
-
-# Install selenium
-pip install selenium

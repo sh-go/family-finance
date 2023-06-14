@@ -11,7 +11,8 @@
 				"christian-kohler.path-intellisense",
 				"tomoki1207.pdf",
 				"ms-python.python",
-				"mechatroner.rainbow-csv"
+				"mechatroner.rainbow-csv",
+				"esbenp.prettier-vscode"
 			]
 		}
 	}
