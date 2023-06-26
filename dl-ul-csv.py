@@ -1,3 +1,6 @@
+import csv, glob, os, re, subprocess
+
+import gspread
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.action_chains import ActionChains
@@ -6,7 +9,8 @@ from selenium.webdriver.chrome.options import Options as ChromeOptions
 # from webdriver_manager.chrome import ChromeDriverManager
 from time import sleep, strftime
 from oauth2client.service_account import ServiceAccountCredentials
-import subprocess, re, os, settings, glob, csv, gspread
+
+import settings
 
 
 #### 家計簿csvのダウンロード ####
@@ -75,11 +79,13 @@ elem_enter_moneyforwardme_use_account.click()
 print(">>>> done!")
 sleep(3)
 
+# 家計簿ページへ
 print(">>>> enter the main page...")
 elem_kakeibo = browser.find_element(By.XPATH, "//*[@id=\"header-container\"]/header/div[2]/ul/li[2]/a")
 elem_kakeibo.click()
 sleep(3)
 
+# 家計簿をダウンロードするために年月を指定する
 print(">>>> enter the kakeibo page & select year and month...")
 elem_select_year_and_month = browser.find_element(By.XPATH, "//*[@id=\"in_out\"]/div[2]/div/span")
 elem_select_year_and_month.click()
@@ -91,6 +97,7 @@ actions.click()
 actions.perform()
 sleep(3)
 
+# csvをダウンロード
 print(">>>> downloading...")
 elem_download_dropdown = browser.find_element(By.XPATH, "//*[@id=\"js-dl-area\"]/a")
 elem_download_dropdown.click()
@@ -99,19 +106,17 @@ elem_dlcsv.click()
 sleep(3)
 print(">>>> OK!!")
 
-
-
 print(">>>> every program completed")
 browser.close()
 
 
-
 #### スプレッドシートにcsvをアップロード ####
+
 scope = ["https://www.googleapis.com/auth/spreadsheets", "https://www.googleapis.com/auth/drive"]
 credentials = ServiceAccountCredentials.from_json_keyfile_name("./credentials.json", scope)
 gc = gspread.authorize(credentials)
 
-
+# csvファイルが同階層にない場合プログラムを終了
 glob_csv = glob.glob("*.csv")
 if glob_csv == []:
     print(">>>> No Such csv File!! Please Download csv File.")
@@ -122,9 +127,9 @@ spreadsheet_name = f"家計簿_{year}"
 spreadsheet = gc.open(spreadsheet_name)
 worksheet = spreadsheet.worksheet(f"{month}月")
 
-
 spreadsheet.values_clear(f"{month}月!Q1:Z200")
 csv_list = list(csv.reader(open(csv_file_name, encoding="shift_jis")))
+
 # csv.readerで読み込んだものは全て文字列となるため、金額部分のみint型に変更
 for row in csv_list[1:]:
     row[3] = int(row[3])

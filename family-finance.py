@@ -1,15 +1,14 @@
-import discord, gspread
 import requests, sys
-import settings
+
+import discord, gspread
 from pdf2image import convert_from_path
 from oauth2client.service_account import ServiceAccountCredentials
 
-
+import settings
 
 
 # 欲しい家計簿の年月を指定
 year, month = map(int, input().split())
-
 
 scope = ["https://www.googleapis.com/auth/spreadsheets", "https://www.googleapis.com/auth/drive"]
 credentials = ServiceAccountCredentials.from_json_keyfile_name("./credentials.json", scope)
