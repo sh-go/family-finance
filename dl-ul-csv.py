@@ -34,24 +34,28 @@ options.add_argument('--disable-blink-features=AutomationControlled')
 options.add_argument(f'user-agent=Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/111.0.0.0 Safari/537.36')
 service = ChromeService("/usr/bin/chromedriver") # ChromeDriverManager().install()を使いたい
 browser = webdriver.Chrome(service=service, options=options)
-browser.get("https://id.moneyforward.com/sign_in/email")
+browser.get("https://moneyforward.com/login")
+
+elem_login = browser.find_element(By.XPATH, "//*[@id=\"login\"]/div/div/div[3]/a")
+elem_login.click()
+sleep(3)
 
 # メールアドレスを入力＆ログイン
 print(">>>> start input mail...")
-elem_input_email = browser.find_element(By.XPATH, "/html/body/main/div/div/div/div[1]/div[1]/section/form/div[2]/div/input")
+elem_input_email = browser.find_element(By.XPATH, "//*[@id=\"mfid_user[email]\"]")
 elem_input_email.send_keys(EMAIL)
 
-elem_login = browser.find_element(By.XPATH, "/html/body/main/div/div/div/div[1]/div[1]/section/form/div[2]/div/div[3]/input")
+elem_login = browser.find_element(By.XPATH, "//*[@id=\"submitto\"]")
 elem_login.click()
 print(">>>> done!")
 sleep(3)
 
 # パスワード入力＆ログイン
 print(">>>> start input password...")
-elem_input_password = browser.find_element(By.XPATH, "/html/body/main/div/div/div/div/div[1]/section/form/div[2]/div/input[2]")
+elem_input_password = browser.find_element(By.XPATH, "//*[@id=\"mfid_user[password]\"]")
 elem_input_password.send_keys(PASSWORD)
 
-elem_login2 = browser.find_element(By.XPATH, "/html/body/main/div/div/div/div/div[1]/section/form/div[2]/div/div[3]/input")
+elem_login2 = browser.find_element(By.XPATH, "//*[@id=\"submitto\"]")
 elem_login2.click()
 print(">>>> done!")
 sleep(3)
@@ -61,23 +65,23 @@ print(">>>> start input two step authentication code...")
 two_step_authentication = ["oathtool", "--totp", "--base32", TWO_STEP_AUTHENTICATION_CODE]
 auth_code = re.findall(r'\d+', subprocess.check_output(two_step_authentication).decode("utf-8"))
 
-elem_input_authcode = browser.find_element(By.XPATH, "/html/body/main/div/div/div/section/div[1]/section/form/div[2]/div/div[1]/input")
+elem_input_authcode = browser.find_element(By.XPATH, "//*[@id=\"otp_attempt\"]")
 elem_input_authcode.send_keys(auth_code[0])
-elem_login3 = browser.find_element(By.XPATH, "/html/body/main/div/div/div/section/div[1]/section/form/div[2]/div/div[2]/button")
+elem_login3 = browser.find_element(By.XPATH, "//*[@id=\"submitto\"]")
 elem_login3.click()
 print(">>>> done!")
 sleep(3)
 
-# マネーフォワードMEのTOPページへ
-print(">>>> start select service & account...")
-elem_select_service_moneyforwardme = browser.find_element(By.XPATH, "/html/body/main/div/div[2]/div/div[1]/div/ul/li/a")
-elem_select_service_moneyforwardme.click()
-sleep(3)
+# # マネーフォワードMEのTOPページへ
+# print(">>>> start select service & account...")
+# elem_select_service_moneyforwardme = browser.find_element(By.XPATH, "/html/body/main/div/div[2]/div/div[1]/div/ul/li/a")
+# elem_select_service_moneyforwardme.click()
+# sleep(3)
 
-elem_enter_moneyforwardme_use_account = browser.find_element(By.XPATH, "/html/body/main/div/div/div/div/div[1]/section/form/div[2]/div/div[2]/input")
-elem_enter_moneyforwardme_use_account.click()
-print(">>>> done!")
-sleep(3)
+# elem_enter_moneyforwardme_use_account = browser.find_element(By.XPATH, "/html/body/main/div/div/div/div/div[1]/section/form/div[2]/div/div[2]/input")
+# elem_enter_moneyforwardme_use_account.click()
+# print(">>>> done!")
+# sleep(3)
 
 # 家計簿ページへ
 print(">>>> enter the main page...")
