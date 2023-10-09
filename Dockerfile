@@ -19,10 +19,10 @@ RUN apt-get install -y vim \
 WORKDIR /workspace/
 COPY requirements.txt .
 COPY set-up-chdriver.sh .
-RUN pip install --upgrade pip setuptools && \
-    pip install -r ./requirements.txt && \
-    chmod +x ./set-up-chdriver.sh && \
-    sh ./set-up-chdriver.sh
+RUN pip install --upgrade pip setuptools
+RUN pip install -r ./requirements.txt
+RUN chmod +x ./set-up-chdriver.sh
+RUN sh ./set-up-chdriver.sh
 
 ARG UID
 ARG GID
