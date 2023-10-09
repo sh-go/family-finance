@@ -11,6 +11,7 @@ ENV TZ=JST-9
 ENV TERM=xterm
 
 RUN apt-get install -y vim \
+    gcc \
     less \
     poppler-utils \
     poppler-data \
