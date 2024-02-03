@@ -7,10 +7,10 @@ on:
         description: '年'
         required: True
         type: choice
-        default: $(date +'%Y')
+        default: $(date '+%Y')
         options:
-          - $(date +'%Y')
-          - $(date +'%Y' --date '1 year ago')
+          - $(date '+%Y')
+          - $(date '+%Y' --date '1 year ago')
       month:
         description: '月'
         required: True
