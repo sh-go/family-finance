@@ -1,17 +1,21 @@
-import csv, glob, os, re, subprocess
+import csv
+import glob
+import os
+import re
+import subprocess
 
-import gspread
-from selenium import webdriver
-from selenium.webdriver.common.by import By
-from selenium.webdriver.common.action_chains import ActionChains
-from selenium.webdriver.chrome.service import Service as ChromeService
-from selenium.webdriver.chrome.options import Options as ChromeOptions
 # from webdriver_manager.chrome import ChromeDriverManager
 from time import sleep, strftime
+
+import gspread
 from oauth2client.service_account import ServiceAccountCredentials
+from selenium import webdriver
+from selenium.webdriver.chrome.options import Options as ChromeOptions
+from selenium.webdriver.chrome.service import Service as ChromeService
+from selenium.webdriver.common.action_chains import ActionChains
+from selenium.webdriver.common.by import By
 
 import settings
-
 
 #### 家計簿csvのダウンロード ####
 # 家計簿の年月を指定
@@ -31,7 +35,7 @@ options.add_argument("--disable-dev-shm-usage")
 options.add_argument("--headless")
 options.add_argument("--no-sandbox")
 options.add_argument('--disable-blink-features=AutomationControlled')
-options.add_argument(f'user-agent=Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/111.0.0.0 Safari/537.36')
+options.add_argument('user-agent=Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/111.0.0.0 Safari/537.36')
 service = ChromeService("/usr/bin/chromedriver") # ChromeDriverManager().install()を使いたい
 browser = webdriver.Chrome(service=service, options=options)
 browser.get("https://moneyforward.com/login")
@@ -128,6 +132,7 @@ if glob_csv == []:
     
 csv_file_name = glob_csv[0]
 spreadsheet_name = f"家計簿_{year}"
+print(spreadsheet_name)
 spreadsheet = gc.open(spreadsheet_name)
 worksheet = spreadsheet.worksheet(f"{month}月")
 
