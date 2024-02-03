@@ -9,9 +9,8 @@ on:
         type: choice
         default: "$(date +'%Y')"
         options:
-          - '2024'
-          - '2023'
-          - '2022'
+          - "$(date +'%Y')"
+          - "$(date +'%Y' --date '1 year ago')"
       month:
         description: '月'
         required: True
