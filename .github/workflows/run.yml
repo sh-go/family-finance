@@ -7,10 +7,9 @@ on:
         description: '年'
         required: True
         type: choice
-        default: "$(date '+%Y')"
         options:
-          - "$(date '+%Y')"
-          - "$(date '+%Y' --date '1 year ago')"
+          - 2024
+          - 2023
       month:
         description: '月'
         required: True
