@@ -1,68 +1,70 @@
 name: Send Image
 
 on:
-    workflow_dispatch:
-        inputs:
-            year:
-                description: "年"
-                required: True
-                type: choice
-                options:
-                    - "2023"
-                    - "2022"
-            month:
-                description: "月"
-                required: True
-                type: choice
-                options:
-                    - "1"
-                    - "2"
-                    - "3"
-                    - "4"
-                    - "5"
-                    - "6"
-                    - "7"
-                    - "8"
-                    - "9"
-                    - "10"
-                    - "11"
-                    - "12"
+  workflow_dispatch:
+    inputs:
+      year:
+        description: '年'
+        required: True
+        type: choice
+        default: "$(date +'%Y')"
+        options:
+          - '2024'
+          - '2023'
+          - '2022'
+      month:
+        description: '月'
+        required: True
+        type: choice
+        options:
+          - '1'
+          - '2'
+          - '3'
+          - '4'
+          - '5'
+          - '6'
+          - '7'
+          - '8'
+          - '9'
+          - '10'
+          - '11'
+          - '12'
 
 jobs:
-    activate_program:
-        name: Activate Program
-        runs-on: ubuntu-latest
-        steps:
-            - uses: actions/checkout@v2
+  activate_program:
+    name: Activate Program
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
 
-            - name: create-json
-              id: create-json
-              uses: jsdaniell/create-json@v1.2.2
-              with:
-                  name: "credentials.json"
-                  json: ${{ secrets.CREDENTIALS_JSON }}
+      - name: create-json
+        id: create-json
+        uses: jsdaniell/create-json@v1.2.2
+        with:
+          name: 'credentials.json'
+          json: ${{ secrets.CREDENTIALS_JSON }}
 
-            - name: Generate .env
-              run: chmod +x set-up-env.sh && sh set-up-env.sh
-              env:
-                  DISCODE_BOT_TOKEN_FAMILYFINANCE: ${{ secrets.DISCODE_BOT_TOKEN_FAMILYFINANCE }}
-                  MFEMAIL: ${{ secrets.MFEMAIL }}
-                  MFPASSWORD: ${{ secrets.MFPASSWORD }}
-                  TWO_STEP_AUTHENTICATION_CODE: ${{ secrets.TWO_STEP_AUTHENTICATION_CODE }}
+      - name: Generate .env
+        run: chmod +x set-up-env.sh && sh set-up-env.sh
+        env:
+          DISCODE_BOT_TOKEN_FAMILYFINANCE: ${{ secrets.DISCODE_BOT_TOKEN_FAMILYFINANCE }}
+          MFEMAIL: ${{ secrets.MFEMAIL }}
+          MFPASSWORD: ${{ secrets.MFPASSWORD }}
+          TWO_STEP_AUTHENTICATION_CODE: ${{ secrets.TWO_STEP_AUTHENTICATION_CODE }}
 
-            - name: Docker-compose Run & download-upload csv
-              run: |
-                  docker-compose build --build-arg UID="$(id -u)" --build-arg GID="$(id -g)" && docker-compose up -d
-                  docker-compose exec -T web bash -c "echo ${{ inputs.year }} ${{ inputs.month }} | python dl-ul-csv.py"
+      - name: Docker-compose Run & download-upload csv
+        run: |
+          docker-compose build --build-arg UID="$(id -u)" --build-arg GID="$(id -g)" && docker-compose up -d
+          docker-compose exec -T web bash -c "echo ${{ inputs.year }} ${{ inputs.month }} | python dl-ul-csv.py"
 
-            - name: Send image on discode
-              run: |
-                  docker-compose exec -T web bash -c "echo ${{ inputs.year }} ${{ inputs.month }} | python family-finance.py"
+      - name: Send image on discode
+        run: |
+          docker-compose exec -T web bash -c "echo ${{ inputs.year }} ${{ inputs.month }} | python family-finance.py"
 
-            # - name: Commit and Push Changes
-            #   run: |
-            #       git config --global user.name "${{ github.actor }}"
-            #       git config --global user.email "alive.vb.s2@gmail.com"
-            #       git add output.png
-            #       git commit -m "Update on `date` with GitHub Actions"
-            #       git push origin main
+      # - name: Commit and Push Changes
+      #   run: |
+      #       git config --global user.name "${{ github.actor }}"
+      #       git config --global user.email "alive.vb.s2@gmail.com"
+      #       git add output.png
+      #       git commit -m "Update on `date` with GitHub Actions"
+      #       git push origin main
