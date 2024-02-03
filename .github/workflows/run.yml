@@ -8,8 +8,8 @@ on:
         required: True
         type: choice
         options:
-          - 2024
-          - 2023
+          - '2024'
+          - '2023'
       month:
         description: '月'
         required: True
