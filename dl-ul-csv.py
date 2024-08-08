@@ -132,7 +132,6 @@ if glob_csv == []:
     
 csv_file_name = glob_csv[0]
 spreadsheet_name = f"家計簿_{year}"
-print(spreadsheet_name)
 spreadsheet = gc.open(spreadsheet_name)
 worksheet = spreadsheet.worksheet(f"{month}月")
 
