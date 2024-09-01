@@ -111,7 +111,7 @@ elem_download_dropdown = browser.find_element(By.XPATH, "//*[@id=\"js-dl-area\"]
 elem_download_dropdown.click()
 elem_dlcsv = browser.find_element(By.XPATH, "//*[@id=\"js-csv-dl\"]/a")
 elem_dlcsv.click()
-sleep(3)
+sleep(10)
 glob_csv = glob.glob("*.csv")
 if glob_csv == []:
     print(">>>> csvがダウンロード出来てません！")
