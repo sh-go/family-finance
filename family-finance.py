@@ -87,6 +87,7 @@ async def on_message(message):
             image = convert_from_path(pdf_name)
             image[0].save("output.png", "png")
 
+            await message.channel.send(file=discord.File("screenshot.png"))
             await message.channel.send(file=discord.File("output.png"))
             await client.close()
             
