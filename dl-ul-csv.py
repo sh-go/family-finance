@@ -98,7 +98,7 @@ print(">>>> enter the kakeibo page & select year and month...")
 elem_select_year_and_month = browser.find_element(By.XPATH, "//*[@id=\"in_out\"]/div[2]/div/span")
 elem_select_year_and_month.click()
 
-actions = ActionChains(browser).
+actions = ActionChains(browser)
 actions.move_to_element(browser.find_element(By.XPATH, f"//*[@id=\"in_out\"]/div[2]/div/div/div[{int(strftime('%Y'))-year+1}]"))
 actions.move_to_element(browser.find_element(By.XPATH, f"//*[@id=\"in_out\"]/div[2]/div/div/div[{int(strftime('%Y'))-year+1}]/div/a[{month}]"))
 actions.click()
