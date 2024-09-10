@@ -114,7 +114,7 @@ browser.save_screenshot("screenshot.png")
 elem_dlcsv.click()
 
 # 一時保存フォルダ内に".crdownload"の拡張子ファイルがある場合は待機
-timeout_sec = 3
+timeout_sec = 10
 success_flg = True
 while glob.glob("/*.crdownload") != []:
     sleep(1)
