@@ -98,7 +98,7 @@ print(">>>> enter the kakeibo page & select year and month...")
 elem_select_year_and_month = browser.find_element(By.XPATH, "//*[@id=\"in_out\"]/div[2]/div/span")
 elem_select_year_and_month.click()
 
-actions = ActionChains(browser)
+actions = ActionChains(browser).
 actions.move_to_element(browser.find_element(By.XPATH, f"//*[@id=\"in_out\"]/div[2]/div/div/div[{int(strftime('%Y'))-year+1}]"))
 actions.move_to_element(browser.find_element(By.XPATH, f"//*[@id=\"in_out\"]/div[2]/div/div/div[{int(strftime('%Y'))-year+1}]/div/a[{month}]"))
 actions.click()
@@ -108,10 +108,10 @@ sleep(3)
 # csvをダウンロード
 print(">>>> downloading...")
 browser.save_screenshot("s1.png")
-elem_download_dropdown = browser.find_element(By.XPATH, "//*[@id=\"js-dl-area\"]/a")
+elem_download_dropdown = browser.find_element(By.XPATH, "/html/body/div[1]/div[2]/div/div/section/section/div[4]/span/div/a")
 elem_download_dropdown.click()
 browser.save_screenshot("s2.png")
-elem_dlcsv = browser.find_element(By.XPATH, "//*[@id=\"js-csv-dl\"]/a")
+elem_dlcsv = browser.find_element(By.XPATH, "/html/body/div[1]/div[2]/div/div/section/section/div[4]/span/div/ul/li[1]/table/tbody/tr/td[2]/span/a")
 elem_dlcsv.click()
 browser.save_screenshot("s3.png")
 
