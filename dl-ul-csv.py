@@ -107,11 +107,13 @@ sleep(3)
 
 # csvをダウンロード
 print(">>>> downloading...")
+browser.save_screenshot("s1.png")
 elem_download_dropdown = browser.find_element(By.XPATH, "//*[@id=\"js-dl-area\"]/a")
 elem_download_dropdown.click()
+browser.save_screenshot("s2.png")
 elem_dlcsv = browser.find_element(By.XPATH, "//*[@id=\"js-csv-dl\"]/a")
-browser.save_screenshot("screenshot.png")
 elem_dlcsv.click()
+browser.save_screenshot("s3.png")
 
 # 一時保存フォルダ内に".crdownload"の拡張子ファイルがある場合は待機
 timeout_sec = 10
