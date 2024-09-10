@@ -112,13 +112,22 @@ elem_download_dropdown.click()
 elem_dlcsv = browser.find_element(By.XPATH, "//*[@id=\"js-csv-dl\"]/a")
 browser.save_screenshot("screenshot.png")
 elem_dlcsv.click()
-sleep(3)
-glob_csv = glob.glob("*.csv")
-if glob_csv == []:
-    print(">>>> csvがダウンロード出来てません！")
 
-print(">>>> OK!!")
-
+# 一時保存フォルダ内に".crdownload"の拡張子ファイルがある場合は待機
+timeout_sec = 3
+success_flg = True
+while glob.glob("/*.crdownload") != []:
+    sleep(1)
+    timeout_sec -= 1
+    if timeout_sec < 0:
+        # ダウンロード失敗タイムアウト
+        success_flg = False
+        break
+if success_flg:
+    print(">>>> OK!!")
+else:
+    print(">>>> ダウンロード出来ませんでした")
+    
 print(">>>> every program completed")
 browser.close()
 
