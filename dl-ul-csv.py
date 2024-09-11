@@ -106,7 +106,6 @@ actions.perform()
 sleep(3)
 
 
-browser.get("https://moneyforward.com/cf/csv?from=2024%2F09%2F01&month=9&year=2024")
 # csvをダウンロード
 print(">>>> downloading...")
 browser.save_screenshot("s1.png")
@@ -134,6 +133,7 @@ else:
     print(">>>> ダウンロード出来ませんでした")
     
 print(">>>> every program completed")
+browser.get("https://moneyforward.com/cf/csv?from=2024%2F09%2F01&month=9&year=2024")
 browser.close()
 
 
