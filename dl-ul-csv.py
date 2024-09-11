@@ -108,7 +108,7 @@ sleep(3)
 # csvをダウンロード
 print(">>>> downloading...")
 browser.save_screenshot("s1.png")
-elem_download_dropdown = browser.find_element(By.XPATH, "/html/body/div[1]/div[2]/div/div/section/section/div[4]/span/div/a")
+elem_download_dropdown = browser.find_element(By.CSS_SELECTOR, "#js-dl-area > a")
 elem_download_dropdown.click()
 sleep(3)
 browser.save_screenshot("s2.png")
