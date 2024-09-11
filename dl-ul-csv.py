@@ -24,13 +24,6 @@ EMAIL = settings.MFEMAIL
 PASSWORD = settings.MFPASSWORD
 TWO_STEP_AUTHENTICATION_CODE = settings.TWO_STEP_AUTHENTICATION_CODE
 options = ChromeOptions()
-# prefs = {
-#     "profile.default_content_settings.popups": 0,
-#     "download.prompt_for_download" : "false",
-#     "download.directory_upgrade": "true",
-#     "download.default_directory": "/home/user"
-# }
-# options.add_experimental_option("prefs", prefs)
 options.add_argument("--disable-dev-shm-usage")
 options.add_argument("--headless=new")
 options.add_argument("--no-sandbox")
@@ -88,17 +81,6 @@ elem_login3.click()
 print(">>>> done!")
 sleep(3)
 
-# # マネーフォワードMEのTOPページへ
-# print(">>>> start select service & account...")
-# elem_select_service_moneyforwardme = browser.find_element(By.XPATH, "/html/body/main/div/div[2]/div/div[1]/div/ul/li/a")
-# elem_select_service_moneyforwardme.click()
-# sleep(3)
-
-# elem_enter_moneyforwardme_use_account = browser.find_element(By.XPATH, "/html/body/main/div/div/div/div/div[1]/section/form/div[2]/div/div[2]/input")
-# elem_enter_moneyforwardme_use_account.click()
-# print(">>>> done!")
-# sleep(3)
-
 # 家計簿ページへ
 print(">>>> enter the main page...")
 elem_kakeibo = browser.find_element(By.XPATH, "//*[@id=\"header-container\"]/header/div[2]/ul/li[2]/a")
@@ -124,12 +106,7 @@ elem_download_dropdown = browser.find_element(By.XPATH, "//*[@id=\"js-dl-area\"]
 elem_download_dropdown.click()
 sleep(3)
 elem_dlcsv = browser.find_element(By.XPATH, "/html/body/div[1]/div[2]/div/div/section/section/div[4]/span/div/ul/li[1]/table/tbody/tr/td[2]/span/a")
-elem_dlcsv.click()
-
-# 一時保存フォルダ内に".crdownload"の拡張子ファイルがある場合は待機
-# browser.get("https://moneyforward.com/cf/csv?from=2024%2F08%2F01&month=8&year=2024")
-# sleep(5)
-    
+elem_dlcsv.click() 
 print(">>>> every program completed")
 browser.close()
 
