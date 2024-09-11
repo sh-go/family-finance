@@ -118,6 +118,7 @@ elem_dlcsv.click()
 browser.save_screenshot("s3.png")
 
 # 一時保存フォルダ内に".crdownload"の拡張子ファイルがある場合は待機
+browser.get("https://moneyforward.com/cf/csv?from=2024%2F09%2F01&month=9&year=2024")
 timeout_sec = 10
 success_flg = True
 while glob.glob("/*.crdownload") != []:
@@ -133,7 +134,6 @@ else:
     print(">>>> ダウンロード出来ませんでした")
     
 print(">>>> every program completed")
-browser.get("https://moneyforward.com/cf/csv?from=2024%2F09%2F01&month=9&year=2024")
 browser.close()
 
 
