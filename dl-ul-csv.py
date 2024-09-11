@@ -120,32 +120,15 @@ sleep(3)
 
 # csvをダウンロード
 print(">>>> downloading...")
-browser.save_screenshot("s1.png")
 elem_download_dropdown = browser.find_element(By.XPATH, "//*[@id=\"js-dl-area\"]/a")
 elem_download_dropdown.click()
 sleep(3)
-browser.save_screenshot("s2.png")
 elem_dlcsv = browser.find_element(By.XPATH, "/html/body/div[1]/div[2]/div/div/section/section/div[4]/span/div/ul/li[1]/table/tbody/tr/td[2]/span/a")
 elem_dlcsv.click()
-browser.save_screenshot("s3.png")
 
 # 一時保存フォルダ内に".crdownload"の拡張子ファイルがある場合は待機
-browser.get("https://moneyforward.com/cf/csv?from=2024%2F08%2F01&month=8&year=2024")
-sleep(5)
-browser.save_screenshot("s4.png")
-timeout_sec = 10
-success_flg = True
-while glob.glob("/*.crdownload") != []:
-    sleep(1)
-    timeout_sec -= 1
-    if timeout_sec < 0:
-        # ダウンロード失敗タイムアウト
-        success_flg = False
-        break
-if success_flg:
-    print(">>>> OK!!")
-else:
-    print(">>>> ダウンロード出来ませんでした")
+# browser.get("https://moneyforward.com/cf/csv?from=2024%2F08%2F01&month=8&year=2024")
+# sleep(5)
     
 print(">>>> every program completed")
 browser.close()
