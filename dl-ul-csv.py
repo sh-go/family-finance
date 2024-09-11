@@ -47,7 +47,7 @@ browser.execute(
     "send_command",
     params={
         'cmd': 'Page.setDownloadBehavior',
-        'params': { 'behavior': 'allow'}
+        'params': { 'behavior': 'allow',"downloadPath":"/workspace"}
     }
 )
 browser.get("https://moneyforward.com/login")
