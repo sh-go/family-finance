@@ -119,6 +119,7 @@ browser.save_screenshot("s3.png")
 
 # 一時保存フォルダ内に".crdownload"の拡張子ファイルがある場合は待機
 browser.get("https://moneyforward.com/cf/csv?from=2024%2F08%2F01&month=8&year=2024")
+sleep(5)
 browser.save_screenshot("s4.png")
 timeout_sec = 10
 success_flg = True
