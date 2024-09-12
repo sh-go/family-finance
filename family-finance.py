@@ -24,10 +24,10 @@ spreadsheet_url_options_for_monthly = (
     "&size=a5" +
     "&fitw=true" +
     "&horizontal_alignment=CENTER" +
-    "&top_margin=0.5" +
-    "&bottom_margin=0.5" +
-    "&left_margin=0.5" +
-    "&right_margin=0.5" +
+    "&top_margin=0.01" +
+    "&bottom_margin=0.01" +
+    "&left_margin=0.01" +
+    "&right_margin=0.01" +
     "&scale=4"
 )
 spreadsheet_url_options_for_budget = (
@@ -38,10 +38,10 @@ spreadsheet_url_options_for_budget = (
     "&size=a5" +
     "&fitw=true" +
     "&horizontal_alignment=CENTER" +
-    "&top_margin=0.5" +
-    "&bottom_margin=0.5" +
-    "&left_margin=0.5" +
-    "&right_margin=0.5" +
+    "&top_margin=0.01" +
+    "&bottom_margin=0.01" +
+    "&left_margin=0.01" +
+    "&right_margin=0.01" +
     "&scale=4"
 )
 
@@ -87,8 +87,8 @@ async def on_ready():
 async def on_message(message): 
     if message.author == client.user:
         if "家計簿" in message.content:
-            for options in [spreadsheet_url_options_for_monthly, spreadsheet_url_options_for_budget]:
-            # pdfを取得
+            for count, options in enumerate([spreadsheet_url_options_for_monthly, spreadsheet_url_options_for_budget],start=1):
+                # pdfを取得
                 pdf_export_url = spreadsheet_url + options
                 pdf_name = "output.pdf"
                 headers = {'Authorization': 'Bearer ' + credentials.create_delegated("").get_access_token().access_token}
@@ -98,9 +98,9 @@ async def on_message(message):
 
                 # 取得したpdfを画像に変換
                 image = convert_from_path(pdf_name)
-                image[0].save("output.png", "png")
-
-                await message.channel.send(file=discord.File("output.png"))
+                image[0].save(f"output{count}.png", "png")
+                print(f"ループ回数：{count}")
+                await message.channel.send(file=discord.File(f"output{count}.png"))
     await client.close()
             
             
