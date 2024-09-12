@@ -1,11 +1,10 @@
-import requests, sys
-
-import discord, gspread
-from pdf2image import convert_from_path
+import discord
+import gspread
+import requests
 from oauth2client.service_account import ServiceAccountCredentials
+from pdf2image import convert_from_path
 
 import settings
-
 
 # 欲しい家計簿の年月を指定
 year, month = map(int, input().split())
@@ -17,7 +16,7 @@ gc = gspread.authorize(credentials)
 spreadsheet_name = f"家計簿_{year}"
 spreadsheet = gc.open(spreadsheet_name)
 spreadsheet_url = "https://docs.google.com/spreadsheets/d/" + spreadsheet.id
-spreadsheet_url_options = (
+spreadsheet_url_options_for_monthly = (
     "/export?format=pdf" +
     f"&gid={spreadsheet.worksheet(f'{month}月').id}" +
     "&range=B1:J37" +
@@ -25,10 +24,24 @@ spreadsheet_url_options = (
     "&size=a5" +
     "&fitw=true" +
     "&horizontal_alignment=CENTER" +
-    "&top_margin=0.00" +
-    "&bottom_margin=0.00" +
-    "&left_margin=0.00" +
-    "&right_margin=0.00" +
+    "&top_margin=0.5" +
+    "&bottom_margin=0.5" +
+    "&left_margin=0.5" +
+    "&right_margin=0.5" +
+    "&scale=4"
+)
+spreadsheet_url_options_for_budget = (
+    "/export?format=pdf" +
+    f"&gid={spreadsheet.worksheet('年間予算').id}" +
+    "&range=B2:Q26" +
+    "&portrait=true" +
+    "&size=a5" +
+    "&fitw=true" +
+    "&horizontal_alignment=CENTER" +
+    "&top_margin=0.5" +
+    "&bottom_margin=0.5" +
+    "&left_margin=0.5" +
+    "&right_margin=0.5" +
     "&scale=4"
 )
 
@@ -74,21 +87,21 @@ async def on_ready():
 async def on_message(message): 
     if message.author == client.user:
         if "家計簿" in message.content:
-            
+            for options in [spreadsheet_url_options_for_monthly, spreadsheet_url_options_for_budget]:
             # pdfを取得
-            pdf_export_url = spreadsheet_url + spreadsheet_url_options
-            pdf_name = "output.pdf"
-            headers = {'Authorization': 'Bearer ' + credentials.create_delegated("").get_access_token().access_token}
-            res = requests.get(pdf_export_url, headers=headers)
-            with open(pdf_name, mode="wb") as f:
-                f.write(res.content)
+                pdf_export_url = spreadsheet_url + options
+                pdf_name = "output.pdf"
+                headers = {'Authorization': 'Bearer ' + credentials.create_delegated("").get_access_token().access_token}
+                res = requests.get(pdf_export_url, headers=headers)
+                with open(pdf_name, mode="wb") as f:
+                    f.write(res.content)
 
-            # 取得したpdfを画像に変換
-            image = convert_from_path(pdf_name)
-            image[0].save("output.png", "png")
+                # 取得したpdfを画像に変換
+                image = convert_from_path(pdf_name)
+                image[0].save("output.png", "png")
 
-            await message.channel.send(file=discord.File("output.png"))
-            await client.close()
+                await message.channel.send(file=discord.File("output.png"))
+    await client.close()
             
             
 client.run(settings.DISCODE_BOT_TOKEN_FAMILYFINANCE)
