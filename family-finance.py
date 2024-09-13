@@ -34,7 +34,7 @@ spreadsheet_url_options_for_budget = (
     "/export?format=pdf" +
     f"&gid={spreadsheet.worksheet('年間予算').id}" +
     "&range=B2:Q26" +
-    "&portrait=true" +
+    "&portrait=false" +
     "&size=a5" +
     "&fitw=true" +
     "&horizontal_alignment=CENTER" +
@@ -103,10 +103,9 @@ async def on_message(message):
             image_1[0].save("output_1.png", "png")
             image_2[0].save("output_2.png", "png")
             
-            await message.channel.send(file=discord.File("output_2.png"))
             await message.channel.send(file=discord.File("output_1.png"))
             await message.channel.send(file=discord.File("output_2.png"))
-    await client.close()
+            await client.close()
             
             
 client.run(settings.DISCODE_BOT_TOKEN_FAMILYFINANCE)
