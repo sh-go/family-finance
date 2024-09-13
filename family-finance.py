@@ -38,6 +38,7 @@ spreadsheet_url_options_for_budget = (
     "&size=a5" +
     "&fitw=true" +
     "&horizontal_alignment=CENTER" +
+    "&vertical_alignment=MIDDLE" +
     "&top_margin=0.01" +
     "&bottom_margin=0.01" +
     "&left_margin=0.01" +
