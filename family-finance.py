@@ -98,8 +98,8 @@ async def on_message(message):
                 f.write(res_2.content)
                 
             # 取得したpdfを画像に変換
-            image_1 = await convert_from_path("output_1.pdf")
-            image_2 = await convert_from_path("output_2.pdf")
+            image_1 = convert_from_path("output_1.pdf")
+            image_2 = convert_from_path("output_2.pdf")
             image_1[0].save("output_1.png", "png")
             image_2[0].save("output_2.png", "png")
             
