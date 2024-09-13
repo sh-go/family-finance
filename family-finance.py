@@ -88,17 +88,21 @@ async def on_message(message):
     if message.author == client.user:
         if "家計簿" in message.content:
             # pdfを取得
-            pdf_export_url_for_monthly = spreadsheet_url + spreadsheet_url_options_for_monthly
-            pdf_export_url_for_budget = spreadsheet_url + spreadsheet_url_options_for_budget
             headers = {'Authorization': 'Bearer ' + credentials.create_delegated("").get_access_token().access_token}
-            for count, url in enumerate([pdf_export_url_for_monthly, pdf_export_url_for_budget],start=1):
-                res = requests.get(url, headers=headers)
-                with open(f"output_{count}.pdf", mode="wb") as f:
-                    f.write(res.content)
-
-                # 取得したpdfを画像に変換
-                image = convert_from_path(f"output_{count}.pdf")
-                image[0].save(f"output_{count}.png", "png")
+            res_1 = requests.get(spreadsheet_url + spreadsheet_url_options_for_monthly, headers=headers)
+            res_2 = requests.get(spreadsheet_url + spreadsheet_url_options_for_budget, headers=headers)
+            
+            with open("output_1.pdf", mode="wb") as f:
+                f.write(res_1.content)
+            with open("output_2.pdf", mode="wb") as f:
+                f.write(res_2.content)
+                
+            # 取得したpdfを画像に変換
+            image_1 = convert_from_path("output_1.pdf")
+            image_2 = convert_from_path("output_2.pdf")
+            image_1[0].save("output_1.png", "png")
+            image_2[0].save("output_2.png", "png")
+            
             await message.channel.send(file=discord.File("output_1.png"))
             await message.channel.send(file=discord.File("output_2.png"))
     await client.close()
