@@ -103,6 +103,7 @@ async def on_message(message):
             image_1[0].save("output_1.png", "png")
             image_2[0].save("output_2.png", "png")
             
+            await message.channel.send(file=discord.File("output_2.png"))
             await message.channel.send(file=discord.File("output_1.png"))
             await message.channel.send(file=discord.File("output_2.png"))
     await client.close()
