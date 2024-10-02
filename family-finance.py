@@ -30,6 +30,20 @@ spreadsheet_url_options_for_monthly = (
     "&right_margin=0.01" +
     "&scale=4"
 )
+spreadsheet_url_options_for_sp_expence = (
+    "/export?format=pdf" +
+    f"&gid={spreadsheet.worksheet(f'{month}月').id}" +
+    "&range=L1:N37" +
+    "&portrait=true" +
+    "&size=a5" +
+    "&fitw=true" +
+    "&horizontal_alignment=CENTER" +
+    "&top_margin=0.01" +
+    "&bottom_margin=0.01" +
+    "&left_margin=0.01" +
+    "&right_margin=0.01" +
+    "&scale=4"
+)
 spreadsheet_url_options_for_budget = (
     "/export?format=pdf" +
     f"&gid={spreadsheet.worksheet('年間予算').id}" +
@@ -91,21 +105,27 @@ async def on_message(message):
             # pdfを取得
             headers = {'Authorization': 'Bearer ' + credentials.create_delegated("").get_access_token().access_token}
             res_1 = requests.get(spreadsheet_url + spreadsheet_url_options_for_monthly, headers=headers)
-            res_2 = requests.get(spreadsheet_url + spreadsheet_url_options_for_budget, headers=headers)
+            res_2 = requests.get(spreadsheet_url + spreadsheet_url_options_for_sp_expence, headers=headers)
+            res_3 = requests.get(spreadsheet_url + spreadsheet_url_options_for_budget, headers=headers)
             
             with open("output_1.pdf", mode="wb") as f:
                 f.write(res_1.content)
             with open("output_2.pdf", mode="wb") as f:
                 f.write(res_2.content)
+            with open("output_3.pdf", mode="wb") as f:
+                f.write(res_3.content)
                 
             # 取得したpdfを画像に変換
             image_1 = convert_from_path("output_1.pdf")
             image_2 = convert_from_path("output_2.pdf")
+            image_3 = convert_from_path("output_3.pdf")
             image_1[0].save("output_1.png", "png")
             image_2[0].save("output_2.png", "png")
+            image_3[0].save("output_3.png", "png")
             
             await message.channel.send(file=discord.File("output_1.png"))
             await message.channel.send(file=discord.File("output_2.png"))
+            await message.channel.send(file=discord.File("output_3.png"))
             await client.close()
             
             
