@@ -30,7 +30,7 @@ spreadsheet_url_options_for_monthly = (
     "&right_margin=0.01" +
     "&scale=4"
 )
-spreadsheet_url_options_for_sp_expence = (
+spreadsheet_url_options_for_special_expence = (
     "/export?format=pdf" +
     f"&gid={spreadsheet.worksheet(f'{month}月').id}" +
     "&range=L1:N37" +
@@ -47,7 +47,7 @@ spreadsheet_url_options_for_sp_expence = (
 spreadsheet_url_options_for_budget = (
     "/export?format=pdf" +
     f"&gid={spreadsheet.worksheet('年間予算').id}" +
-    "&range=A2:R26" +
+    "&range=A2:S26" +
     "&portrait=false" +
     "&size=a5" +
     "&fitw=true" +
