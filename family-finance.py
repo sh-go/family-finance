@@ -105,7 +105,7 @@ async def on_message(message):
             # pdfを取得
             headers = {'Authorization': 'Bearer ' + credentials.create_delegated("").get_access_token().access_token}
             res_1 = requests.get(spreadsheet_url + spreadsheet_url_options_for_monthly, headers=headers)
-            res_2 = requests.get(spreadsheet_url + spreadsheet_url_options_for_sp_expence, headers=headers)
+            res_2 = requests.get(spreadsheet_url + spreadsheet_url_options_for_special_expence, headers=headers)
             res_3 = requests.get(spreadsheet_url + spreadsheet_url_options_for_budget, headers=headers)
             
             with open("output_1.pdf", mode="wb") as f:
