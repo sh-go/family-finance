@@ -94,7 +94,7 @@ client = discord.Client(intents=intents)
 async def on_ready(): 
     guild = discord.utils.get(client.guilds)
     channel = discord.utils.get(guild.text_channels, name="一般")
-    await channel.send(f"{year}年{month}月の家計簿でーす！")
+    await channel.send(f"{year}年{month}月の家計簿です💴")
 
 
 # 画像送信
