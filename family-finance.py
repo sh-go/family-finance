@@ -1,6 +1,5 @@
 import discord
 import gspread
-from pypdf import PdfWriter
 import requests
 from oauth2client.service_account import ServiceAccountCredentials
 from pdf2image import convert_from_path
@@ -116,20 +115,21 @@ async def on_message(message):
             with open("output_3.pdf", mode="wb") as f:
                 f.write(res_3.content)
             
-            # 作成したｐｄｆを統合
-            merger = PdfWriter()
-            
-            for pdf in ["output_1.pdf", "output_2.pdf", "output_3.pdf"]:
-                merger.append(pdf)
-
-            merger.write("output.pdf")
-            merger.close()
-            
             # 取得したpdfを画像に変換
-            image = convert_from_path("output.pdf")
-            image[0].save("output.png", "png")
+            image_1 = convert_from_path("output_1.pdf")
+            image_2 = convert_from_path("output_2.pdf")
+            image_3 = convert_from_path("output_3.pdf")
+            image_1[0].save("output_1.png", "png")
+            image_2[0].save("output_2.png", "png")
+            image_3[0].save("output_3.png", "png")
             
-            await message.channel.send(file=discord.File("output.png"))
+            send_files = [
+                discord.File("output_1.png"),
+                discord.File("output_2.png"),
+                discord.File("output_3.png"),
+            ]
+            
+            await message.channel.send(files=send_files)
             await client.close()
             
             
