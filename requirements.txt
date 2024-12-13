@@ -29,6 +29,7 @@ protobuf==4.22.0
 pyasn1==0.4.8
 pyasn1-modules==0.2.8
 pyparsing==3.0.9
+pypdf==5.1.0
 PySocks==1.7.1
 python-dotenv==0.21.1
 requests==2.28.2
@@ -43,6 +44,6 @@ trio==0.22.0
 trio-websocket==0.10.2
 uritemplate==4.1.1
 urllib3==1.26.14
-# webdriver-manager==3.8.5
+webdriver-manager==3.8.5
 wsproto==1.2.0
 yarl==1.8.2
