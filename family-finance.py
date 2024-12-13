@@ -1,5 +1,6 @@
 import discord
 import gspread
+from pypdf import PdfWriter
 import requests
 from oauth2client.service_account import ServiceAccountCredentials
 from pdf2image import convert_from_path
@@ -47,7 +48,7 @@ spreadsheet_url_options_for_special_expence = (
 spreadsheet_url_options_for_budget = (
     "/export?format=pdf" +
     f"&gid={spreadsheet.worksheet('年間予算').id}" +
-    "&range=A2:S26" +
+    "&range=A2:S30" +
     "&portrait=false" +
     "&size=a5" +
     "&fitw=true" +
@@ -114,18 +115,21 @@ async def on_message(message):
                 f.write(res_2.content)
             with open("output_3.pdf", mode="wb") as f:
                 f.write(res_3.content)
-                
-            # 取得したpdfを画像に変換
-            image_1 = convert_from_path("output_1.pdf")
-            image_2 = convert_from_path("output_2.pdf")
-            image_3 = convert_from_path("output_3.pdf")
-            image_1[0].save("output_1.png", "png")
-            image_2[0].save("output_2.png", "png")
-            image_3[0].save("output_3.png", "png")
             
-            await message.channel.send(file=discord.File("output_1.png"))
-            await message.channel.send(file=discord.File("output_2.png"))
-            await message.channel.send(file=discord.File("output_3.png"))
+            # 作成したｐｄｆを統合
+            merger = PdfWriter()
+            
+            for pdf in ["output_1.pdf", "output_2.pdf", "output_3.pdf"]:
+                merger.append(pdf)
+
+            merger.write("output.pdf")
+            merger.close()
+            
+            # 取得したpdfを画像に変換
+            image = convert_from_path("output.pdf")
+            image[0].save("output.png", "png")
+            
+            await message.channel.send(file=discord.File("output.png"))
             await client.close()
             
             
