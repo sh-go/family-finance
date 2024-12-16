@@ -50,6 +50,13 @@ jobs:
           MFPASSWORD: ${{ secrets.MFPASSWORD }}
           TWO_STEP_AUTHENTICATION_CODE: ${{ secrets.TWO_STEP_AUTHENTICATION_CODE }}
 
+      - uses: docker/setup-buildx-action@v3
+      - uses: docker/build-push-action@v6
+        with:
+          context: .
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
       - name: Docker-compose Run & download-upload csv
         run: |
           docker compose build --build-arg UID="$(id -u)" --build-arg GID="$(id -g)" && docker compose up -d
