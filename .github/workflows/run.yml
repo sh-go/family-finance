@@ -56,11 +56,13 @@ jobs:
           # context: .
           cache-from: type=gha
           cache-to: type=gha,mode=max
-          build-args:
+          build-args: |
+            UID=$(id -u)
+            GID=$(id -g)
 
       - name: Docker-compose Run & download-upload csv
         run: |
-          docker compose build && docker compose up -d
+          docker compose build --build-arg UID="$(id -u)" --build-arg GID="$(id -g)" && docker compose up -d
           docker compose exec -T web bash -c "echo ${{ inputs.year }} ${{ inputs.month }} | python dl-ul-csv.py"
 
       - name: Send image on discode
