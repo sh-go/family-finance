@@ -25,11 +25,10 @@ RUN pip install -r ./requirements.txt
 RUN chmod +x ./set-up-chdriver.sh
 RUN sh ./set-up-chdriver.sh
 
-ARG UID
-ARG GID
-ARG USERNAME
-ARG GROUPNAME
-RUN echo ${GID}
+ARG UID=1000
+ARG GID=1000
+ARG USERNAME=user
+ARG GROUPNAME=user
 RUN groupadd -f -g ${GID} ${GROUPNAME} && \
     useradd -m -s /bin/bash -u ${UID} -g ${GID} ${USERNAME}
 USER ${USERNAME}
