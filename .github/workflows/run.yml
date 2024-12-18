@@ -55,8 +55,11 @@ jobs:
           echo "UID=$(id -u)" >> $GITHUB_ENV
           echo "GID=$(id -g)" >> $GITHUB_ENV
 
-      - uses: docker/setup-buildx-action@v3
-      - uses: docker/build-push-action@v6
+      - name: activate builx
+        uses: docker/setup-buildx-action@v3
+
+      - name: setting build-push-action
+        uses: docker/build-push-action@v6
         with:
           # context: .
           cache-from: type=gha
