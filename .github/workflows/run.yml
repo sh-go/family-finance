@@ -65,8 +65,8 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
           build-args: |
-            UID="$UID"
-            GID="$GID"
+            UID=${{env.UID}}
+            GID=${{env.GID}}
 
       - name: Docker-compose Run & download-upload csv
         run: |
