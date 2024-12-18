@@ -50,6 +50,11 @@ jobs:
           MFPASSWORD: ${{ secrets.MFPASSWORD }}
           TWO_STEP_AUTHENTICATION_CODE: ${{ secrets.TWO_STEP_AUTHENTICATION_CODE }}
 
+      - name: create UID & GID
+        run: |
+          echo "UID=$(id -u)" >> "$GITHUB_ENV"
+          echo "GID=$(id -g)" >> "$GITHUB_ENV"
+
       - uses: docker/setup-buildx-action@v3
       - uses: docker/build-push-action@v6
         with:
@@ -57,8 +62,8 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
           build-args: |
-            UID="${id -u}"
-            GID="${id -g}"
+            UID=$UID
+            GID=$GID
 
       - name: Docker-compose Run & download-upload csv
         run: |
