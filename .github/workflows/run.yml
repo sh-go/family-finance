@@ -54,6 +54,8 @@ jobs:
         run: |
           echo "UID=$(id -u)" >> $GITHUB_ENV
           echo "GID=$(id -g)" >> $GITHUB_ENV
+          echo "USERNAME=user" >> $GITHUB_ENV
+          echo "GROUPNAME=user" >> $GITHUB_ENV
 
       - name: activate builx
         uses: docker/setup-buildx-action@v3
@@ -67,6 +69,8 @@ jobs:
           build-args: |
             UID=${{ env.UID }}
             GID=${{ env.GID }}
+            USERNAME=${{ env.USERNAME }}
+            GROUPNAME=${{ env.GROUPNAME }}
 
       - name: Docker-compose Run & download-upload csv
         run: |

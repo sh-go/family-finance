@@ -27,8 +27,8 @@ RUN sh ./set-up-chdriver.sh
 
 ARG UID
 ARG GID
-ARG USERNAME=user
-ARG GROUPNAME=user
+ARG USERNAME
+ARG GROUPNAME
 RUN groupadd -f -g ${GID} ${GROUPNAME} && \
     useradd -m -s /bin/bash -u ${UID} -g ${GID} ${USERNAME}
 USER ${USERNAME}
