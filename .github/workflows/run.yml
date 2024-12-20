@@ -74,7 +74,7 @@ jobs:
 
       - name: Docker-compose Run & download-upload csv
         run: |
-          docker compose up -d
+          docker compose build --build-arg UID=${{ env.UID }} --build-arg GID=${{ env.GID }} && docker compose up -d
           docker compose exec -T web bash -c "echo ${{ inputs.year }} ${{ inputs.month }} | python dl-ul-csv.py"
 
       - name: Send image on discode
