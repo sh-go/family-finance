@@ -72,20 +72,15 @@ jobs:
             USERNAME=${{ env.USERNAME }}
             GROUPNAME=${{ env.GROUPNAME }}
 
-      - name: Docker-compose Run & download-upload csv
+      - name: Docker-compose build & run
         run: |
           docker compose build --build-arg UID=${{ env.UID }} --build-arg GID=${{ env.GID }} --build-arg USERNAME=${{ env.USERNAME }} --build-arg GROUPNAME=${{ env.GROUPNAME }}
           docker compose up -d
+
+      - name: download-upload csv
+        run: |
           docker compose exec -T web bash -c "echo ${{ inputs.year }} ${{ inputs.month }} | python dl-ul-csv.py"
 
       - name: Send image on discode
         run: |
           docker compose exec -T web bash -c "echo ${{ inputs.year }} ${{ inputs.month }} | python family-finance.py"
-
-      # - name: Commit and Push Changes
-      #   run: |
-      #       git config --global user.name "${{ github.actor }}"
-      #       git config --global user.email "alive.vb.s2@gmail.com"
-      #       git add output.png
-      #       git commit -m "Update on `date` with GitHub Actions"
-      #       git push origin main
