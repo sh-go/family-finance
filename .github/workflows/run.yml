@@ -77,7 +77,7 @@ jobs:
         run: |
           docker compose exec -T web bash -c "python mf-all-update.py"
 
-  update_csv & send_image:
+  update_csv&send_image:
     if: github.event_name == 'workflow_dispatch'
     name: Activate Program
     runs-on: ubuntu-latest
