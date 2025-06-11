@@ -2,7 +2,7 @@ name: Send Image
 
 on:
   schedule:
-    - cron: '22 0 * * *' # 日本時間にて
+    - cron: '30 0 * * *' # 日本時間にて
   workflow_dispatch:
     inputs:
       year:
