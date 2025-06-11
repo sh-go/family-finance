@@ -81,6 +81,12 @@ elem_login3.click()
 print(">>>> done!")
 sleep(3)
 
+# グループの選択
+print(">>>> select the group...")
+elem_group = browser.find_element(By.XPATH, "//*[@id=\"group_id_hash\"]/option[2]")
+elem_group.click()
+sleep(3)
+
 # 家計簿ページへ
 print(">>>> enter the main page...")
 elem_kakeibo = browser.find_element(By.XPATH, "//*[@id=\"header-container\"]/header/div[2]/ul/li[2]/a")

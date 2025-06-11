@@ -87,6 +87,12 @@ elem_all_update = browser.find_element(By.XPATH, "//*[@id=\"registered-accounts\
 elem_all_update.click()
 sleep(3)
 
+# 家計グループを選択
+print(">>>> select the group...")
+elem_group = browser.find_element(By.XPATH, "//*[@id=\"group_id_hash\"]/option[2]")  
+elem_group.click()
+sleep(3)
+
 # 更新ボタンをクリック後、discodeで通知
 import discord
 intents = discord.Intents.default()
