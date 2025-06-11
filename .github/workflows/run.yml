@@ -31,20 +31,14 @@ on:
           - '12'
 
 jobs:
-  activate_program:
-    name: Activate Program
+  all_update:
+    if: github.event_name == 'workflow_dispatch'
+    name: All Update
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
 
-      - name: create-json
-        id: create-json
-        uses: jsdaniell/create-json@v1.2.2
-        with:
-          name: 'credentials.json'
-          json: ${{ secrets.CREDENTIALS_JSON }}
-
-      - name: Generate .env
+      - name: generate .env
         run: chmod +x set-up-env.sh && sh set-up-env.sh
         env:
           DISCODE_BOT_TOKEN_FAMILYFINANCE: ${{ secrets.DISCODE_BOT_TOKEN_FAMILYFINANCE }}
@@ -59,7 +53,7 @@ jobs:
           echo "USERNAME=user" >> $GITHUB_ENV
           echo "GROUPNAME=user" >> $GITHUB_ENV
 
-      - name: activate builx
+      - name: activate buildx
         uses: docker/setup-buildx-action@v3
 
       - name: setting build-push-action
@@ -74,22 +68,68 @@ jobs:
             USERNAME=${{ env.USERNAME }}
             GROUPNAME=${{ env.GROUPNAME }}
 
-      - name: Docker-compose build & run
+      - name: docker compose build & run
         run: |
           docker compose build --build-arg UID=${{ env.UID }} --build-arg GID=${{ env.GID }} --build-arg USERNAME=${{ env.USERNAME }} --build-arg GROUPNAME=${{ env.GROUPNAME }}
           docker compose up -d
 
       - name: all update
-        if: github.event_name == 'schedule'
         run: |
           docker compose exec -T web bash -c "python mf-all-update.py"
 
-      - name: download-upload csv
-        if: github.event_name == 'workflow_dispatch'
-        run: |
-          docker compose exec -T web bash -c "echo ${{ inputs.year }} ${{ inputs.month }} | python dl-ul-csv.py"
+  # update_csv & send_image:
+  #   if: github.event_name == 'workflow_dispatch'
+  #   name: Activate Program
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v2
 
-      - name: Send image on discode
-        if: github.event_name == 'workflow_dispatch'
-        run: |
-          docker compose exec -T web bash -c "echo ${{ inputs.year }} ${{ inputs.month }} | python family-finance.py"
+  #     - name: create json
+  #       id: create-json
+  #       uses: jsdaniell/create-json@v1.2.2
+  #       with:
+  #         name: 'credentials.json'
+  #         json: ${{ secrets.CREDENTIALS_JSON }}
+
+  #     - name: generate .env
+  #       run: chmod +x set-up-env.sh && sh set-up-env.sh
+  #       env:
+  #         DISCODE_BOT_TOKEN_FAMILYFINANCE: ${{ secrets.DISCODE_BOT_TOKEN_FAMILYFINANCE }}
+  #         MFEMAIL: ${{ secrets.MFEMAIL }}
+  #         MFPASSWORD: ${{ secrets.MFPASSWORD }}
+  #         TWO_STEP_AUTHENTICATION_CODE: ${{ secrets.TWO_STEP_AUTHENTICATION_CODE }}
+
+  #     - name: create UID & GID
+  #       run: |
+  #         echo "UID=$(id -u)" >> $GITHUB_ENV
+  #         echo "GID=$(id -g)" >> $GITHUB_ENV
+  #         echo "USERNAME=user" >> $GITHUB_ENV
+  #         echo "GROUPNAME=user" >> $GITHUB_ENV
+
+  #     - name: activate buildx
+  #       uses: docker/setup-buildx-action@v3
+
+  #     - name: setting build-push-action
+  #       uses: docker/build-push-action@v6
+  #       with:
+  #         load: true
+  #         cache-from: type=gha
+  #         cache-to: type=gha,mode=max
+  #         build-args: |
+  #           UID=${{ env.UID }}
+  #           GID=${{ env.GID }}
+  #           USERNAME=${{ env.USERNAME }}
+  #           GROUPNAME=${{ env.GROUPNAME }}
+
+  #     - name: docker compose build & run
+  #       run: |
+  #         docker compose build --build-arg UID=${{ env.UID }} --build-arg GID=${{ env.GID }} --build-arg USERNAME=${{ env.USERNAME }} --build-arg GROUPNAME=${{ env.GROUPNAME }}
+  #         docker compose up -d
+
+  #     - name: download-upload csv
+  #       run: |
+  #         docker compose exec -T web bash -c "echo ${{ inputs.year }} ${{ inputs.month }} | python dl-ul-csv.py"
+
+  #     - name: Send image on discode
+  #       run: |
+  #         docker compose exec -T web bash -c "echo ${{ inputs.year }} ${{ inputs.month }} | python family-finance.py"
