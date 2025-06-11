@@ -1,4 +1,4 @@
-name: Send Image
+name: All Update or Send Image
 
 on:
   schedule:
