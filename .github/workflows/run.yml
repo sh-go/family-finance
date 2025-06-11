@@ -1,6 +1,8 @@
 name: Send Image
 
 on:
+  schedule:
+    - cron: '22 0 * * *' # 日本時間にて
   workflow_dispatch:
     inputs:
       year:
@@ -77,10 +79,17 @@ jobs:
           docker compose build --build-arg UID=${{ env.UID }} --build-arg GID=${{ env.GID }} --build-arg USERNAME=${{ env.USERNAME }} --build-arg GROUPNAME=${{ env.GROUPNAME }}
           docker compose up -d
 
+      - name: all update
+        if: github.event_name == 'schedule'
+        run: |
+          docker compose exec -T web bash -c "python mf-all-update.py"
+
       - name: download-upload csv
+        if: github.event_name == 'workflow_dispatch'
         run: |
           docker compose exec -T web bash -c "echo ${{ inputs.year }} ${{ inputs.month }} | python dl-ul-csv.py"
 
       - name: Send image on discode
+        if: github.event_name == 'workflow_dispatch'
         run: |
           docker compose exec -T web bash -c "echo ${{ inputs.year }} ${{ inputs.month }} | python family-finance.py"
