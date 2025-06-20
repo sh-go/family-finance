@@ -2,7 +2,7 @@ name: All Update or Send Image
 
 on:
   schedule:
-    - cron: '0 21 * * *' # 毎日21時に実行
+    - cron: '30 21 * * *' # JST 6:30 AM
   workflow_dispatch:
     inputs:
       year:
