@@ -22,6 +22,7 @@ options.add_argument("--headless=new")
 options.add_argument("--no-sandbox")
 options.add_argument('--disable-blink-features=AutomationControlled')
 options.add_argument('user-agent=Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/111.0.0.0 Safari/537.36')
+options.add_argument("--window-size=1920,1080")
 options.add_experimental_option("prefs",{"download.prompt_for_download":False})
 service = ChromeService("/usr/bin/chromedriver") # ChromeDriverManager().install()を使いたい
 browser = webdriver.Chrome(service=service, options=options)
