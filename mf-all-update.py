@@ -90,7 +90,7 @@ sleep(3)
 
 # 家計グループを選択
 print(">>>> select the group...")
-elem_group = browser.find_element(By.XPATH, "//*[@id=\"group_id_hash\"]/option[3]")
+elem_group = browser.find_element(By.XPATH, "//*[@id=\"group_id_hash\"]/option[2]")
 sleep(3)
 
 # 更新ボタンをクリック後、discodeで通知
