@@ -78,7 +78,7 @@ sleep(3)
 
 # 家計簿グループ（すべての金融機関）を選択
 print(">>>> select the group...")
-elem_group = browser.find_element(By.XPATH, "//*[@id=\"group_id_hash\"]/option[3]")  
+elem_group = browser.find_element(By.XPATH, "//*[@id=\"group_id_hash\"]/option[3]")
 elem_group.click()
 sleep(3)
 
