@@ -1,4 +1,3 @@
-version: '3'
 services:
   web:
     shm_size: '2g'
