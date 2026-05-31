@@ -12,8 +12,11 @@ from oauth2client.service_account import ServiceAccountCredentials
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options as ChromeOptions
 from selenium.webdriver.chrome.service import Service as ChromeService
+from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.by import By
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.ui import WebDriverWait
 
 import settings
 
@@ -90,6 +93,19 @@ sleep(3)
 
 # 家計簿ページへ
 print(">>>> enter the main page...")
+
+# Brazeのin-app messageモーダルが出ていれば閉じる（出ない場合はスキップ）
+try:
+    iframe = WebDriverWait(browser, 5).until(
+        EC.presence_of_element_located((By.CSS_SELECTOR, "iframe.ab-in-app-message"))
+    )
+    browser.switch_to.frame(iframe)
+    browser.find_element(By.CSS_SELECTOR, ".ab-close-button").click()
+    browser.switch_to.default_content()
+    sleep(1)
+except TimeoutException:
+    pass
+
 elem_kakeibo = browser.find_element(By.XPATH, "//*[@id=\"header-container\"]/header/div[2]/ul/li[2]/a")
 elem_kakeibo.click()
 sleep(3)
