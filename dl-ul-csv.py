@@ -94,14 +94,14 @@ sleep(3)
 # 家計簿ページへ
 print(">>>> enter the main page...")
 
-# Brazeのin-app messageモーダルが出ていれば閉じる（出ない場合はスキップ）
+# Brazeのin-app messageモーダルが出ていればDOMごと除去する（出ない場合はスキップ）
 try:
-    iframe = WebDriverWait(browser, 5).until(
+    WebDriverWait(browser, 5).until(
         EC.presence_of_element_located((By.CSS_SELECTOR, "iframe.ab-in-app-message"))
     )
-    browser.switch_to.frame(iframe)
-    browser.find_element(By.CSS_SELECTOR, ".ab-close-button").click()
-    browser.switch_to.default_content()
+    browser.execute_script(
+        "document.querySelectorAll('.ab-iam-root, iframe.ab-in-app-message').forEach(e => e.remove())"
+    )
     sleep(1)
 except TimeoutException:
     pass
