@@ -8,6 +8,7 @@ import subprocess
 from time import sleep, strftime
 
 import gspread
+from gspread.exceptions import APIError
 from oauth2client.service_account import ServiceAccountCredentials
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options as ChromeOptions
@@ -136,6 +137,24 @@ browser.close()
 
 #### スプレッドシートにcsvをアップロード ####
 
+# Google Sheets APIが一時的なエラー(5xx/レート制限)を返した場合、指数バックオフで再試行する
+RETRYABLE_STATUS_CODES = {429, 500, 502, 503, 504}
+
+
+def with_retry(func, *args, retries=5, base_delay=2, **kwargs):
+    for attempt in range(retries):
+        try:
+            return func(*args, **kwargs)
+        except APIError as e:
+            status_code = getattr(e.response, "status_code", None)
+            if status_code in RETRYABLE_STATUS_CODES and attempt < retries - 1:
+                wait = base_delay * (2 ** attempt)
+                print(f">>>> Sheets API {status_code}, retrying in {wait}s (attempt {attempt + 1}/{retries})...")
+                sleep(wait)
+                continue
+            raise
+
+
 scope = ["https://www.googleapis.com/auth/spreadsheets", "https://www.googleapis.com/auth/drive"]
 credentials = ServiceAccountCredentials.from_json_keyfile_name("./credentials.json", scope)
 gc = gspread.authorize(credentials)
@@ -145,18 +164,18 @@ glob_csv = glob.glob("*.csv")
 if glob_csv == []:
     print(">>>> No Such csv File!! Please Download csv File.")
     exit()
-    
+
 csv_file_name = glob_csv[0]
 spreadsheet_name = f"家計簿_{year}"
-spreadsheet = gc.open(spreadsheet_name)
-worksheet = spreadsheet.worksheet(f"{month}月")
+spreadsheet = with_retry(gc.open, spreadsheet_name)
+worksheet = with_retry(spreadsheet.worksheet, f"{month}月")
 
-spreadsheet.values_clear(f"{month}月!Q1:Z200")
+with_retry(spreadsheet.values_clear, f"{month}月!Q1:Z200")
 csv_list = list(csv.reader(open(csv_file_name, encoding="shift_jis")))
 
 # csv.readerで読み込んだものは全て文字列となるため、金額部分のみint型に変更
 for row in csv_list[1:]:
     row[3] = int(row[3])
-    
-worksheet.update("Q1:Z200", csv_list)
+
+with_retry(worksheet.update, "Q1:Z200", csv_list)
 os.remove(f"{csv_file_name}")
