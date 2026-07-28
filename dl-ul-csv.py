@@ -3,6 +3,7 @@ import glob
 import os
 import re
 import subprocess
+import sys
 
 # from webdriver_manager.chrome import ChromeDriverManager
 from time import sleep, strftime
@@ -48,6 +49,23 @@ browser.execute(
         'params': { 'behavior': 'allow',"downloadPath":"/workspace"}
     }
 )
+
+# 未捕捉例外で終了する際、原因調査用にスクリーンショットとページソースをdebug/へ保存する
+def _save_debug_info_on_error(exc_type, exc_value, tb):
+    try:
+        os.makedirs("debug", exist_ok=True)
+        timestamp = strftime("%Y%m%d-%H%M%S")
+        browser.save_screenshot(f"debug/error-{timestamp}.png")
+        with open(f"debug/error-{timestamp}.html", "w", encoding="utf-8") as f:
+            f.write(browser.page_source)
+        print(f">>>> saved debug info: debug/error-{timestamp}.png / .html")
+    except Exception as save_error:
+        print(f">>>> failed to save debug info: {save_error}")
+    sys.__excepthook__(exc_type, exc_value, tb)
+
+
+sys.excepthook = _save_debug_info_on_error
+
 browser.get("https://moneyforward.com/login")
 
 elem_login = browser.find_element(By.XPATH, "//*[@id=\"login\"]/div/div/div[3]/a")

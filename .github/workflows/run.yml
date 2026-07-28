@@ -130,6 +130,14 @@ jobs:
         run: |
           docker compose exec -T web bash -c "echo ${{ inputs.year }} ${{ inputs.month }} | python dl-ul-csv.py"
 
+      - name: upload debug artifacts
+        if: failure()
+        uses: actions/upload-artifact@v7
+        with:
+          name: selenium-debug
+          path: debug/
+          if-no-files-found: ignore
+
       - name: Send image on discode
         run: |
           docker compose exec -T web bash -c "echo ${{ inputs.year }} ${{ inputs.month }} | python family-finance.py"
