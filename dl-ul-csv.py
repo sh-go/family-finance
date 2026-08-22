@@ -14,8 +14,11 @@ from oauth2client.service_account import ServiceAccountCredentials
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options as ChromeOptions
 from selenium.webdriver.chrome.service import Service as ChromeService
-from selenium.common.exceptions import TimeoutException
-from selenium.webdriver.common.action_chains import ActionChains
+from selenium.common.exceptions import (
+    ElementClickInterceptedException,
+    ElementNotInteractableException,
+    TimeoutException,
+)
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
@@ -130,25 +133,95 @@ elem_kakeibo.click()
 sleep(3)
 
 # 家計簿をダウンロードするために年月を指定する
-print(">>>> enter the kakeibo page & select year and month...")
-elem_select_year_and_month = browser.find_element(By.XPATH, "//*[@id=\"in_out\"]/div[2]/div/span")
-elem_select_year_and_month.click()
+print(f">>>> enter the kakeibo page & select {year}/{month}...")
+wait = WebDriverWait(browser, 30)
 
-actions = ActionChains(browser)
-actions.move_to_element(browser.find_element(By.XPATH, f"//*[@id=\"in_out\"]/div[2]/div/div/div[{int(strftime('%Y'))-year+1}]"))
-actions.move_to_element(browser.find_element(By.XPATH, f"//*[@id=\"in_out\"]/div[2]/div/div/div[{int(strftime('%Y'))-year+1}]/div/a[{month}]"))
-actions.click()
-actions.perform()
+
+def _current_period():
+    return browser.find_element(By.CSS_SELECTOR, "#in_out .in-out-header-title").text
+
+
+def _click(elem):
+    """通常のクリックが他要素に遮られる場合はJavaScript経由でクリックする"""
+    try:
+        elem.click()
+    except (ElementClickInterceptedException, ElementNotInteractableException):
+        browser.execute_script("arguments[0].click();", elem)
+
+
+# 年月選択のドロップダウンを開く
+elem_select_year_and_month = wait.until(
+    EC.element_to_be_clickable((By.CSS_SELECTOR, ".js-uikit-year-month-select-dropdown"))
+)
+_click(elem_select_year_and_month)
+
+# 対象の年月リンクをdata属性で直接指定してクリックする
+# （マウス移動で選ぶ方式は、ドロップダウンの表示位置がずれると別の年月を選んでしまうため）
+elem_month_link = wait.until(
+    EC.presence_of_element_located(
+        (
+            By.CSS_SELECTOR,
+            f".js-uikit-year-month-select-dropdown-link[data-year='{year}'][data-month='{month}']",
+        )
+    )
+)
+browser.execute_script("arguments[0].click();", elem_month_link)
+
+# 指定した年月に切り替わるまで待つ（切り替わらなければここで失敗させる）
+expected_period = f"{year}/{month:02d}/01"
+
+
+def _is_expected_period(_driver):
+    try:
+        return expected_period in _current_period()
+    except Exception:
+        return False
+
+
+try:
+    wait.until(_is_expected_period)
+except TimeoutException:
+    raise RuntimeError(
+        f"failed to select {expected_period} (current period: {_current_period()})"
+    )
+print(f">>>> selected period: {_current_period()}")
 sleep(3)
 
 
 # csvをダウンロード
 print(">>>> downloading...")
-elem_download_dropdown = browser.find_element(By.XPATH, "//*[@id=\"js-dl-area\"]/a")
-elem_download_dropdown.click()
-sleep(3)
-elem_dlcsv = browser.find_element(By.XPATH, "/html/body/div[1]/div[2]/div/div/section/section/div[4]/span/div/ul/li[1]/table/tbody/tr/td[2]/span/a")
-elem_dlcsv.click() 
+csv_files_before = set(glob.glob("*.csv"))
+
+try:
+    elem_download_dropdown = wait.until(
+        EC.element_to_be_clickable((By.CSS_SELECTOR, "#js-dl-area .dropdown-toggle"))
+    )
+except TimeoutException:
+    raise RuntimeError(
+        f"download button is not available for {expected_period} "
+        "(the selected month may have no data)"
+    )
+_click(elem_download_dropdown)
+
+elem_dlcsv = wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, "#js-csv-dl a")))
+_click(elem_dlcsv)
+
+
+# ダウンロード完了（新しいcsvが出現し、かつ未完了の.crdownloadが残っていない）を待つ
+def _wait_for_downloaded_csv(timeout=60):
+    for _ in range(timeout):
+        downloaded = set(glob.glob("*.csv")) - csv_files_before
+        if downloaded and not glob.glob("*.crdownload"):
+            return sorted(downloaded)[0]
+        sleep(1)
+    return None
+
+
+csv_file_name = _wait_for_downloaded_csv()
+if csv_file_name is None:
+    raise RuntimeError("csv download did not complete")
+
+print(f">>>> downloaded: {csv_file_name}")
 print(">>>> every program completed")
 browser.close()
 
@@ -177,13 +250,6 @@ scope = ["https://www.googleapis.com/auth/spreadsheets", "https://www.googleapis
 credentials = ServiceAccountCredentials.from_json_keyfile_name("./credentials.json", scope)
 gc = gspread.authorize(credentials)
 
-# csvファイルが同階層にない場合プログラムを終了
-glob_csv = glob.glob("*.csv")
-if glob_csv == []:
-    print(">>>> No Such csv File!! Please Download csv File.")
-    exit()
-
-csv_file_name = glob_csv[0]
 spreadsheet_name = f"家計簿_{year}"
 spreadsheet = with_retry(gc.open, spreadsheet_name)
 worksheet = with_retry(spreadsheet.worksheet, f"{month}月")
