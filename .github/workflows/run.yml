@@ -2,7 +2,7 @@ name: All Update or Send Image
 
 on:
   schedule:
-    - cron: '30 21 * * *' # JST 6:30 AM
+    - cron: '37 20 * * *' # JST 5:37 AM
   workflow_dispatch:
     inputs:
       year:
